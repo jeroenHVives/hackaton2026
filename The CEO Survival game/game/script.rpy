@@ -14,10 +14,14 @@ default WV_Happines = 7
 default MFA = False
 default diff_passwords = False 
 default phishing_aware = False
+default updates = False
 
 #is a transform attribute to ajust the size
 transform small_size: 
-    zoom 0.10 #adjust as required
+    zoom 0.13 #adjust as required
+
+transform medium_size:
+    zoom 0.2
 
 transform normal_size:
     zoom 0.75
@@ -42,7 +46,7 @@ label start:
     #for the background
     scene bg room at normal_size
     show ceo normal at small_size, left
-    show cso normal at small_size, left
+    show cso guy at medium_size, right
 
     show screen money()
 
@@ -85,8 +89,12 @@ label question_1:
         #option 2
         "Optionele MFA (de medewerkers zelf laten kiezen)":
             $ MFA = renpy.random.choice([True, False])
+<<<<<<< Updated upstream
             IT "Een halfslachtige oplossing. Slechts een deel van het bedrijf is nu beschermd."
             WV "Een redelijk compromis, zolang het niet verplicht is."
+=======
+            IT "Placeholder optionele MFA"
+>>>>>>> Stashed changes
             jump question_2
             
             
@@ -118,9 +126,14 @@ label question_2:
             jump question_3
 
 
+<<<<<<< Updated upstream
         "De medewerjers moeten voor elk account een ander wachtwoord gebruiken en deze moeten telkens helemaal anders zijn.":
             it "De enige echt veilige keuze. Zo zorgen we ervoor dat elk account geïsoleerd en goed afgeschermd is."
             wv "Dit is toch onmogelijk te onthouden?! Dan gaan mensen het gegarandeerd overal op post-its schrijven!"
+=======
+        "De medewerkers moeten voor elk account een ander wachtwoord gebruiken en deze moeten telkens helemaal anders zijn.":
+            narator "Placeholder verschillende wachtwoorden"
+>>>>>>> Stashed changes
             $diff_passwords = True
             jump passwrd_safe
 
@@ -143,9 +156,14 @@ label passwrd_safe:
             $WV_Happines = WV_Happines - 1
             jump question_3
 
+<<<<<<< Updated upstream
         "Het bedrijf zal €8000 aan de kant zetten om te investeren in wachtwoordenmanagers zodat elke gebruiker een heeft.":
             it "Een hele sterke keuze. Met een betaalde Enterprise-versie beveiligen we de boel én kunnen we accounts centraal beheren en intrekken."
             wv "Kijk, zo hoort het. Als de directie de juiste tools betaalt en faciliteert, werken we daar graag aan mee."
+=======
+        "Het bedrijf zal €8.000 aan de kant zetten om te investeren in wachtwoordenmanagers zodat elke gebruiker een heeft.":
+            narator "placeholder betalende wachtwoordenmanager"
+>>>>>>> Stashed changes
             $ geld = geld - 8000
             if (geld < 0):
                 jump failliet
@@ -176,6 +194,45 @@ label question_3:
 
 label question_4:
     narator "placeholder auto update"
+
+    menu:
+        "Moeten de medewerkers auto-update aanzetten?"
+
+        "Nee, ze moeten zelf updaten als er een update is.":
+            $ WV_Happines = WV_Happines - 1
+            narator "placeholder zelf updaten"
+            $ updates = True
+            jump question_5
+
+        "Nee, ze zijn niet verplicht om updates te doen.":
+            narator "placeholder geen updates"
+            jump question_5
+
+        "Ja, ze zijn verplicht om auto updates aan te zetten.":
+            narator "placeholder auto-update"
+            $ updates = True 
+            jump question_5         
+
+label question_5:
+    narator "placeholder fingerprint scanners"
+    menu:
+        "Moeten de medewerkers fingerprint scanners gebruiken om in te loggen?"
+
+        "Ja, ze moeten fingerprint scanners gebruiken en we gaan voor iedereen een scanner kopen. Dit zal €40.000 kosten":
+            $ MFA = True
+            $ geld = geld - 40000
+            $ WV_Happines = WV_Happines - 1
+            if( WV_Happines <= 3):
+                narator "placeholder fingerprint gebruiken geirriteerde werknemer vertegenwoordiger"
+            else:
+                narator "placeholder fingerprint gebruiken niet geirriteerde werknemer vertegenwoordiger"
+        
+        "Nee, ze moeten geen fingerprint scanners gebruiken":
+            narator "geen fingerprint gebruiken"
+        
+
+label intro_deel2:        
+
 
 label failliet: 
     narator "Je bedrijf is failliet gegaan"
