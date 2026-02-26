@@ -234,8 +234,7 @@ label question_5:
 default firewall = 0
 default backups = 0
 default backups_time = 0
-default eigen_laptop = False
-default Security_cameras = 1
+default eigen_server = False
 
 label intro_deel2:        
     narator "placeholder intro deel 2"
@@ -307,11 +306,81 @@ label deel2_question_2:
         "Niets back-uppen":
             $ backups = 0
             narator "placeholder niets back-uppen"
-            jump deel2_question_3
+            jump 
 
 
 label deel2_question_3:
-    pass
+    narator "placeholder om de hoeveel dagen back-uppen."
+    
+    menu:
+        "Wanneer wordt er geback-upt?"
+        
+        "elk jaar back-uppen (€250.000)":
+            $ backups_time = 1
+            $ geld = geld - 250000
+            narator "placeholder jaarlijks back-uppen"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_4
+
+        "elke maand back-uppen (€650.000)":
+            $ backups_time = 2
+            $ geld = geld - 650000
+            narator "placeholder maandelijks back-uppen"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_4
+
+        "elke week back-uppen (€800.000)":
+            $ backups_time = 3
+            $ geld = geld - 800000
+            narator "placeholder weekelijks back-uppen"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_4
+        
+        "elke dag back-uppen (€1.000.000)":
+            $ backups_time = 4
+            $ geld = geld - 1000000
+            narator "placeholder dagelijks back-uppen"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_4
+
+label deel2_question_4:
+    narator "placeholder eigen server of externe server":
+    
+    menu:
+        "Wil je back-uppen op eigen servers of op externe servers?"
+        
+        "Eigen servers. (€110.000)":
+            $ eigen_server = True
+            $ geld = geld - 1000000
+            narator "placeholder eigen server voor backups"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump hack
+
+        "Externe servers (€90.000)":
+            $ eigen_server = True
+            $ geld = geld - 90000
+            narator "placeholder externe server voor backups"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump hack
+
+default weakness = 0
+default reputatie = 100
+
+label hack:
+    if(phishing_aware):
+        Rep    
 
 label failliet: 
     narator "Je bedrijf is failliet gegaan"
