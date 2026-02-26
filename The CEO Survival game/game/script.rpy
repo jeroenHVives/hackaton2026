@@ -9,7 +9,7 @@ define it = Character("IT consultant", color="#29fa11")
 define narator = Character(" ")
 define wv = Character("Werknemer vertegenwoordiger", color="#118afa")
 
-default geld = 4000
+default geld = 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 default WV_Happines = 7
 default MFA = False
 default diff_passwords = False 
@@ -83,16 +83,16 @@ label question_1:
         #option 1
         "Geen MFA":
             #MFA staat al op False
-            IT "Dit is een groot risico. Wachtwoorden alleen zijn niet genoeg."
-            WV "Fijn om te horen dat we de mensen niet lastigvallen met extra inlogstappen."
+            it "Dit is een groot risico. Wachtwoorden alleen zijn niet genoeg."
+            wv "Fijn om te horen dat we de mensen niet lastigvallen met extra inlogstappen."
             jump question_2            
             
 
         #option 2
         "Optionele MFA (de medewerkers zelf laten kiezen)":
             $ MFA = renpy.random.choice([True, False])
-            IT "Een halfslachtige oplossing. Slechts een deel van het bedrijf is nu beschermd."
-            WV "Een redelijk compromis, zolang het niet verplicht is."
+            it "Een halfslachtige oplossing. Slechts een deel van het bedrijf is nu beschermd."
+            wv "Een redelijk compromis, zolang het niet verplicht is."
 
             jump question_2
             
@@ -223,14 +223,65 @@ label question_5:
                 wv "Dit is echt de druppel! Eerst al die andere extreme regels, en nu moeten we ook nog gescand worden alsof we criminelen zijn?! Het werk is hier niet meer te doen!"
             else:
                 wv "Ik blijf het een inbreuk op de privacy vinden en het kost een fortuin... maar goed, als de directie denkt dat het echt moet."
-        
+            jump intro_deel2
+
         "Nee, ze moeten geen fingerprint scanners gebruiken":
             wv "Gelukkig. Laten we onze biometrische gegevens gewoon lekker privé houden. En het bespaart nog geld ook."
             it "Jammer. Ik begrijp dat de kosten hoog zijn, maar we laten hiermee wel een ijzersterke beveiligingslaag liggen."
+            jump intro_deel2
         
 
-label intro_deel2:        
+default firewall = 0
+default backups = 0
+default backups_time = 0
+default eigen_laptop = False
+default Security_cameras = 1
 
+label intro_deel2:        
+    narator "placeholder intro deel 2"
+    jump deel2_question_1
+
+label deel2_question_1:
+    narator "placeholder firewall"
+    
+    menu:
+        "Welke firewall moet het bedrijf aankopen"
+
+        "Het bedrijf moet geen firewall aankopen":
+            $ firewall = 0
+            narator "placeholder geen firewall"
+            jump deel2_question_2
+
+
+        "Het bedrijf moet een goedkope firewall aankopen. (€ 20.000)":
+            $ firewall = 1
+            $ geld = geld - 20000
+            narator "placeholder goedkope firewall"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_2
+
+        "Het bedrijf moet een iets duurdere firewall aankopen. (€ 60.000)":
+            $ firewall = 2
+            $ geld = geld - 60000
+            narator "placeholder gemiddelde firewall."
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_2
+
+        "Het bedrijf moet een heel dure firewall aankopen. (€ 120 000)":
+            $ firewall = 3
+            $ geld = geld - 120000
+            narator "placeholder dure firewall."
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_2
+
+label deel2_question_2:
+    pass
 
 label failliet: 
     narator "Je bedrijf is failliet gegaan"
