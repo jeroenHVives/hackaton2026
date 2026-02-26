@@ -48,6 +48,12 @@ label start:
 
     ceo "Ah, kom verder. Ga zitten. Welkom bij NeXioCo."
     ceo "Je weet waarom we je hebben aangenomen. Ons bedrijf is de afgelopen jaren geëxplodeerd. We hebben inmiddels 800 werknemers op de loonlijst, we draaien miljoenenomzetten, maar als ik heel eerlijk ben... onze IT-security is een gatenkaas."
+    ceo "Daarom ben jij nu onze Chief Security Officer. Jij krijgt de leiding over ons budget en jij bepaalt vanaf vandaag welke maatregelen we wel en niet doorvoeren."
+    cso "Ik ben er klaar voor. Waar beginnen we mee?"
+    ceo "We hebben een externe IT-consultant ingehuurd. Zij heeft ons hele bedrijf geanalyseerd en een lijst met mogelijke securitymaatregelen voorbereid."
+    ceo "Het is aan jou om haar voorstellen te beoordelen. Jij hakt de knopen door over wat we wel en niet gaan invoeren. Weeg de kosten af tegen de risico's voor het bedrijf."
+    ceo "Je zult harde keuzes moeten maken. Succes. Ze wachten op je in de vergaderzaal."
+    
     # cso normal is the name for the file you want to use as character sprite this sprite stands in the images folder
     # Small_size is a self made attribute (see above)
     # left and right is a attribute in renpy that decides where the character sprite stands
