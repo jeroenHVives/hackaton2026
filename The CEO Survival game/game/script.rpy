@@ -53,7 +53,7 @@ label start:
     ceo "We hebben een externe IT-consultant ingehuurd. Zij heeft ons hele bedrijf geanalyseerd en een lijst met mogelijke securitymaatregelen voorbereid."
     ceo "Het is aan jou om haar voorstellen te beoordelen. Jij hakt de knopen door over wat we wel en niet gaan invoeren. Weeg de kosten af tegen de risico's voor het bedrijf."
     ceo "Je zult harde keuzes moeten maken. Succes. Ze wachten op je in de vergaderzaal."
-    
+
     # cso normal is the name for the file you want to use as character sprite this sprite stands in the images folder
     # Small_size is a self made attribute (see above)
     # left and right is a attribute in renpy that decides where the character sprite stands
@@ -64,7 +64,8 @@ label start:
 
 label question_1:
     #Is to let a character say a scentence
-    narator "Placeholder gesprek MFA"
+    it "Laten we beginnen bij de basis: Multifactorauthenticatie (MFA). Dit is de belangrijkste barrière tegen ongeautoriseerde toegang."
+    wv "Wacht eens even, als we dit verplichten moeten mensen elke keer hun privételefoon pakken om in te loggen. Dat gaat veel klachten opleveren."
 
 
     #menu for 2fa
@@ -76,15 +77,16 @@ label question_1:
         #option 1
         "Geen MFA":
             #MFA staat al op False
-            IT "placeholder geen MFA"
+            IT "Dit is een groot risico. Wachtwoorden alleen zijn niet genoeg."
+            WV "Fijn om te horen dat we de mensen niet lastigvallen met extra inlogstappen."
             jump question_2            
             
 
         #option 2
         "Optionele MFA (de medewerkers zelf laten kiezen)":
             $ MFA = renpy.random.choice([True, False])
-            IT "[MFA]"
-            IT "Placeholder optionele MFA"
+            IT "Een halfslachtige oplossing. Slechts een deel van het bedrijf is nu beschermd."
+            WV "Een redelijk compromis, zolang het niet verplicht is."
             jump question_2
             
             
@@ -92,48 +94,58 @@ label question_1:
         "Verplichte MFA":
             $ MFA = True
             $WV_Happines = WV_Happines - 1
-            IT "Placeholder verplichte MFA"
+            it "Verstandig. Dit verkleint de kans op een succesvolle hack aanzienlijk."
+            wv "De werknemers gaan hier niet blij mee zijn, dit kost ze elke dag extra tijd."
             jump question_2
 
 label question_2:
-    narator "Placeholder verschillende wachtwoorden"
+    it "Het volgende punt: Het wachtwoordbeleid. We zien dat veel medewerkers nu simpelweg hetzelfde wachtwoord voor alle systemen gebruiken."
+    wv "Ja, natuurlijk. Je kunt toch van niemand verwachten dat ze twintig verschillende complexe codes onthouden?"
+    it "Maar als dat ene wachtwoord ergens uitlekt, hebben hackers meteen toegang tot ons hele bedrijfsnetwerk. We moeten bepalen hoe we dit aanpakken, CSO."
 
     menu:
         "Moeten de medewerkers voor elk account een ander wachtwoord gebruiken?" 
 
         "De medewerkers mogen voor meerdere accounts dezelfde wachtwoorden gebruiken.":
-            narator "Placeholder zelfde wachtwoorden"
+            it "Dit is echt wachten op een ramp. Eén simpel datalek op een externe site en ons bedrijf ligt open."
+            wv "Ik ben blij dat je realistisch blijft. Zo kunnen we tenminste gewoon doorwerken zonder hoofdpijn."
             jump question_3
 
         
         "De medewerkers moeten voor elk account een ander wachtwoord gebruiken. Maar deze wachtwoorden mogen gelijkaardig zijn.":
-            narator "Placeholder gelijkaardige wachtwoorden"
+            it "Hackers kennen die truc met 'Wachtwoord1' en 'Wachtwoord2' echt al lang. Dit biedt vooral schijnveiligheid."
+            wv "Het is tenminste werkbaar voor de mensen. Dan veranderen we elke maand gewoon het laatste cijfertje."
             jump question_3
 
 
         "De medewerjers moeten voor elk account een ander wachtwoord gebruiken en deze moeten telkens helemaal anders zijn.":
-            narator "Placeholder verschillende wachtwoorden"
+            it "De enige echt veilige keuze. Zo zorgen we ervoor dat elk account geïsoleerd en goed afgeschermd is."
+            wv "Dit is toch onmogelijk te onthouden?! Dan gaan mensen het gegarandeerd overal op post-its schrijven!"
             $diff_passwords = True
             jump passwrd_safe
 
 label passwrd_safe:
-    narator "placeholder paswoord safe"
+    wv "Als we dan toch onmogelijke, complexe wachtwoorden moeten bedenken voor elk systeem, dan eisen we wel dat we een wachtwoordmanager mogen gebruiken."
+    it "Een wachtwoordmanager of 'Password Safe' is inderdaad noodzakelijk nu. Maar hoe gaan we dat faciliteren? Dat is de vraag."
 
     menu:
         "Mogen de medewerkers een wachtwoordenmanager gebruiken?"
 
         "De medewerkers mogen een gratis wachtwoordenmanager gebruiken.":
-            narator "placeholder gratis wachtwoordenmanager"
+            it "Het probleem is dat we als IT-afdeling geen overzicht hebben over die gratis privéklaasjes. Als iemand uit dienst gaat, raken we de toegang kwijt."
+            wv "Mij best, zolang de medewerkers hun wachtwoorden maar ergens veilig kunnen opslaan."
             jump question_3
 
 
         "De medewerkers mogen geen wachtwoordenmanager gebruiken.":
-            narator "placeholder geen wachtwoordenmanager"
+            wv "Dit is compleet bizar! Je eist onmogelijke dingen van het personeel zonder ons de middelen te geven. Het werk wordt zo onmogelijk gemaakt!"
+            it "Ik zet me alvast schrap voor een explosie aan 'wachtwoord vergeten' tickets bij de helpdesk..."
             $WV_Happines = WV_Happines - 1
             jump question_3
 
         "Het bedrijf zal €8000 aan de kant zetten om te investeren in wachtwoordenmanagers zodat elke gebruiker een heeft.":
-            narator "placeholder betalende wachtwoordenmanager"
+            it "Een hele sterke keuze. Met een betaalde Enterprise-versie beveiligen we de boel én kunnen we accounts centraal beheren en intrekken."
+            wv "Kijk, zo hoort het. Als de directie de juiste tools betaalt en faciliteert, werken we daar graag aan mee."
             $ geld = geld - 8000
             if (geld < 0):
                 jump failliet
@@ -141,20 +153,23 @@ label passwrd_safe:
                 jump question_3
 
 label question_3:
-    narator "placeholder phishing awareness training"
+    it "We moeten het hebben over phishing. Werknemers klikken nog te vaak op onveilige links in e-mails, waardoor hackers binnenkomen."
+    wv "De meeste mensen hebben echt wel door of een mail nep is of niet. We hoeven ze daar niet voor van hun werk te houden met verplichte theorie."
     default awareness = renpy.random.randint(1,4)
     menu:
         "Moeten de werknemers een phishing awareness training doen?"
 
         "Ja, de medewerkerkers moeten een phishing awareness training doen.":
-            narator "placeholder wel phishing awareness training"
+            it "Een verstandige keuze. Door ze te trainen, maken we van onze medewerkers een sterke verdedigingslinie."
+            wv "Daar gaan weer kostbare uren naar een verplichte cursus... De werkvloer zal hier echt niet blij mee zijn."
             
             if (awareness <= 3):
                 $ phishing_aware = True
             jump question_4
         
         "Nee, de medewerkers zijn niet verplicht om een phishing awareness training doen.":
-            narator "placeholder geen phishing awareness training"
+            wv "Precies, we vertrouwen gewoon op het gezonde verstand van onze mensen. Dat bespaart een hoop tijd en frustratie."
+            it "Ik hoop dat je gelijk hebt, maar zonder training lopen we hier echt een aanzienlijk risico."
             if (awareness <=1 ):
                 $ phishing_aware = True
             jump question_4
