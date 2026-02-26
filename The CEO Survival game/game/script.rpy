@@ -238,25 +238,32 @@ default eigen_laptop = False
 default Security_cameras = 1
 
 label intro_deel2:        
-    narator "placeholder intro deel 2"
+    it "Goed, we hebben de beleidsafspraken voor het personeel nu rond. De werknemervertegenwoordiger kan weer aan het werk."
+    it "Nu we het gaan hebben over de harde IT-infrastructuur en de grote systemen, heb ik iemand anders aan tafel gevraagd."
+    cfo "Goedemiddag. Als Chief Financial Officer houd ik de portemonnee van NeXioCo strak in de gaten. Ik hoor dat deze hardware-plannen in de tienduizenden euro's gaan lopen."
+    cfo "We hebben geen bodemloze put als budget, CSO. Elke euro die we aan 'onzichtbare' security uitgeven, kunnen we niet in onze groei steken. Ik verwacht dat je alleen investeert in wat écht strikt noodzakelijk is."
     jump deel2_question_1
 
 label deel2_question_1:
-    narator "placeholder firewall"
+    it "Laten we beginnen met de voordeur van ons bedrijfsnetwerk: de firewall. Met 800 medewerkers stroomt er dagelijks gigantisch veel data in en uit."
+    it "We hebben een krachtige Next-Generation Firewall nodig die al dat netwerkverkeer scant op virussen en indringers buiten de deur houdt."
+    cfo "Ik heb de mogelijke offertes gezien en ik schrok me kapot. Die apparaten zijn peperduur. Is dat echt nodig, of kunnen we het met een budgetoplossing af?"
     
     menu:
         "Welke firewall moet het bedrijf aankopen"
 
         "Het bedrijf moet geen firewall aankopen":
             $ firewall = 0
-            narator "placeholder geen firewall"
+            it "Dit is absolute waanzin! Zonder firewall staan al onze bedrijfsgegevens, servers en klantinformatie gewoon open en bloot op het internet!"
+            cfo "Kijk, dat is nou eens een flinke besparing. Ik hoop wel dat je weet wat je doet, CSO, de verantwoordelijkheid ligt volledig bij jou."
             jump deel2_question_2
 
 
         "Het bedrijf moet een goedkope firewall aankopen. (€ 20.000)":
             $ firewall = 1
             $ geld = geld - 20000
-            narator "placeholder goedkope firewall"
+            it "Een instapmodel. Het houdt de meest simpele aanvallen tegen, maar we kopen er maar één. Als dit apparaat crasht, ligt de internetverbinding voor alle 800 medewerkers plat."
+            cfo "Twintigduizend euro is nog net te overzien. Zolang het dat vinkje voor de security-audit maar op groen zet, vind ik het best."
             if (geld < 0):
                 jump failliet
             else:
@@ -265,7 +272,8 @@ label deel2_question_1:
         "Het bedrijf moet een iets duurdere firewall aankopen. (€ 60.000)":
             $ firewall = 2
             $ geld = geld - 60000
-            narator "placeholder gemiddelde firewall."
+            it "Een uitstekende en verstandige keuze. Hiermee kopen we twee firewalls die elkaars werk naadloos overnemen als er één uitvalt, mét geavanceerde virusscans."
+            cfo "Zestigduizend euro... Pfft, dat is een flinke hap uit onze winstmarge. Maar goed, als het ons een nog duurdere hack en downtime bespaart, heb je mijn zegen."
             if (geld < 0):
                 jump failliet
             else:
@@ -274,14 +282,17 @@ label deel2_question_1:
         "Het bedrijf moet een heel dure firewall aankopen. (€ 120 000)":
             $ firewall = 3
             $ geld = geld - 120000
-            narator "placeholder dure firewall."
+            it "Perfect! Dit is de absolute top van de markt voor enterprise netwerken. Onverslaanbare netwerksegmentatie, topsnelheid en de allerbeste actieve virusdetectie die we kunnen krijgen."
+            cfo "Honderdtwintigduizend euro?! Ben je je verstand verloren? Dit is zwaar overdreven en slaat een gigantisch gat in onze kas!"
             if (geld < 0):
                 jump failliet
             else:
                 jump deel2_question_2
 
 label deel2_question_2:
-    narator "placeholder Backups"
+    it "Het volgende agendapunt is onze back-up strategie. Als er ooit ransomware op ons netwerk belandt, versleutelen de hackers al onze data."
+    it "Zonder goede back-ups zijn we in zo'n scenario letterlijk al onze bedrijfsgegevens kwijt, of moeten we miljoenen aan losgeld betalen."
+    cfo "Ik weet dat we data moeten bewaren, maar ik zie ook de facturen van die cloud-opslag. Het kost ons handenvol geld om dingen dubbel op te slaan."
 
     menu:
         "Wat gaan we back-uppen?"
@@ -289,7 +300,8 @@ label deel2_question_2:
         "Alles back-uppen. (computers, documenten, mails, shares ...) (€225.000)":
             $ backups = 2
             $ geld = geld - 225000
-            narator "placeholder alles back-uppen"
+            it "Een fantastische keuze. Mocht er een ramp gebeuren, dan kunnen we letterlijk het hele bedrijf inclusief alle mailboxen en pc-instellingen binnen no-time herstellen."
+            cfo "Tweehonderdvijfentwintigduizend euro?! Dit is te bizar voor woorden! We betalen een kwart miljoen voor het opslaan van gigabytes aan nutteloze e-mails en kattenplaatjes van het personeel!"
             if (geld < 0):
                 jump failliet
             else:
@@ -298,7 +310,8 @@ label deel2_question_2:
         "Alleen de documenten back-uppen (€66.000)":
             $ backups = 1
             $ geld = geld - 66000
-            narator "placeholder documenten back-uppen"
+            it "Een werkbaar compromis. De harde bedrijfsdata is veilig, al zijn we bij een hack wel alle e-mailhistorie en individuele computerinstellingen kwijt."
+            cfo "Kijk, zesenzestigduizend euro klinkt al een stuk logischer. De essentiële contracten zijn veilig, en de rest is toch maar ballast."
             if (geld < 0):
                 jump failliet
             else:
@@ -306,7 +319,8 @@ label deel2_question_2:
         
         "Niets back-uppen":
             $ backups = 0
-            narator "placeholder niets back-uppen"
+            it "Dit is een onverantwoord risico! Als we één keer een cryptolocker binnenkrijgen of een zware servercrash hebben, riskeren we in één klap het voortbestaan van het hele bedrijf."
+            cfo "Dat is weer nul euro op de begroting. Bovendien hebben we toch net geld uitgegeven aan beveiliging? Dan zorgen jullie maar dat die hackers überhaupt niet binnenkomen."
             jump deel2_question_3
 
 
