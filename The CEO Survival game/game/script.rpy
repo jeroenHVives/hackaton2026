@@ -281,6 +281,36 @@ label deel2_question_1:
                 jump deel2_question_2
 
 label deel2_question_2:
+    narator "placeholder Backups"
+
+    menu:
+        "Wat gaan we back-uppen?"
+
+        "Alles back-uppen. (computers, documenten, mails, shares ...) (€225.000)":
+            $ backups = 2
+            $ geld = geld - 225000
+            narator "placeholder alles back-uppen"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_3
+
+        "Alleen de documenten back-uppen (€66.000)":
+            $ backups = 1
+            $ geld = geld - 66000
+            narator "placeholder documenten back-uppen"
+            if (geld < 0):
+                jump failliet
+            else:
+                jump deel2_question_3
+        
+        "Niets back-uppen":
+            $ backups = 0
+            narator "placeholder niets back-uppen"
+            jump deel2_question_3
+
+
+label deel2_question_3:
     pass
 
 label failliet: 
