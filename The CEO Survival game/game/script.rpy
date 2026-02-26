@@ -181,28 +181,34 @@ label question_3:
             jump question_4
 
 label question_4:
-    narator "placeholder auto update"
+    it "Het volgende punt gaat over software-updates. Verouderde software bevat vaak beveiligingslekken die hackers gemakkelijk kunnen misbruiken."
+    wv "Maar die updates komen altijd op het slechtste moment! Je bent net geconcentreerd bezig en dan eist je computer ineens een herstart van een kwartier."
 
     menu:
         "Moeten de medewerkers auto-update aanzetten?"
 
         "Nee, ze moeten zelf updaten als er een update is.":
             $ WV_Happines = WV_Happines - 1
-            narator "placeholder zelf updaten"
+            it "Zolang de medewerkers er maar prioriteit aan geven en ze direct installeren, is het netwerk in ieder geval veilig."
+            wv "Dus we moeten nu constant zélf in de gaten houden of er een update is en ons werk daarvoor stilleggen? Dat is echt enorm frustrerend!"
             $ updates = True
             jump question_5
 
         "Nee, ze zijn niet verplicht om updates te doen.":
-            narator "placeholder geen updates"
+            wv "Mooi, dan bepalen we zelf wel of en wanneer we er tijd voor hebben. Dat scheelt een hoop onnodige werkonderbrekingen."
+            it "Dit is echt een tijdbom. Bekende kwetsbaarheden in onze systemen blijven zo simpelweg openstaan voor aanvallers."
             jump question_5
 
         "Ja, ze zijn verplicht om auto updates aan te zetten.":
-            narator "placeholder auto-update"
+            it "Perfect. Met automatische updates worden de lekken meteen gedicht zonder dat iemand eraan hoeft te denken."
+            wv "Zolang de computers dat updaten maar 's nachts of op de achtergrond doen, scheelt het ons in ieder geval handmatig werk..."
+            $ updates = True
             $ updates = True 
             jump question_5         
 
 label question_5:
-    narator "placeholder fingerprint scanners"
+    it "Een andere vorm van toegangscontrole is biometrie. We kunnen investeren in vingerafdrukscanners voor alle computers."
+    wv "Vingerafdrukken? Gaan we nu ook al fysieke kenmerken van ons personeel opslaan? Dat voelt toch wel als een flinke inbreuk op de privacy."
     menu:
         "Moeten de medewerkers fingerprint scanners gebruiken om in te loggen?"
 
@@ -210,13 +216,17 @@ label question_5:
             $ MFA = True
             $ geld = geld - 40000
             $ WV_Happines = WV_Happines - 1
+
+            it "Een flinke investering, maar biometrische MFA is ontzettend lastig te omzeilen voor hackers. Ons netwerk is hiermee veel veiliger."
+
             if( WV_Happines <= 3):
-                narator "placeholder fingerprint gebruiken geirriteerde werknemer vertegenwoordiger"
+                wv "Dit is echt de druppel! Eerst al die andere extreme regels, en nu moeten we ook nog gescand worden alsof we criminelen zijn?! Het werk is hier niet meer te doen!"
             else:
-                narator "placeholder fingerprint gebruiken niet geirriteerde werknemer vertegenwoordiger"
+                wv "Ik blijf het een inbreuk op de privacy vinden en het kost een fortuin... maar goed, als de directie denkt dat het echt moet."
         
         "Nee, ze moeten geen fingerprint scanners gebruiken":
-            narator "geen fingerprint gebruiken"
+            wv "Gelukkig. Laten we onze biometrische gegevens gewoon lekker privé houden. En het bespaart nog geld ook."
+            it "Jammer. Ik begrijp dat de kosten hoog zijn, maar we laten hiermee wel een ijzersterke beveiligingslaag liggen."
         
 
 label intro_deel2:        
