@@ -3,11 +3,11 @@
 
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
-define cso = Character("CSO")
-define ceo = Character("CEO")
-define IT = Character("IT consultant")
+define cso = Character("CSO", color="#e7eb0e")
+define ceo = Character("CEO", color="#faa911")
+define it = Character("IT consultant", color="#29fa11")
 define narator = Character(" ")
-define WV = Character("Werknemer vertegenwoordiger")
+define wv = Character("Werknemer vertegenwoordiger", color="#118afa")
 
 default geld = 4000
 default WV_Happines = 7
@@ -62,7 +62,9 @@ label start:
     # Small_size is a self made attribute (see above)
     # left and right is a attribute in renpy that decides where the character sprite stands
     
-    show it guy at small_size, right
+    hide ceo normal
+    show it guy at small_size, left
+
 
     jump question_1
 
@@ -89,16 +91,12 @@ label question_1:
         #option 2
         "Optionele MFA (de medewerkers zelf laten kiezen)":
             $ MFA = renpy.random.choice([True, False])
-<<<<<<< Updated upstream
             IT "Een halfslachtige oplossing. Slechts een deel van het bedrijf is nu beschermd."
             WV "Een redelijk compromis, zolang het niet verplicht is."
-=======
-            IT "Placeholder optionele MFA"
->>>>>>> Stashed changes
+
             jump question_2
             
             
-    
         "Verplichte MFA":
             $ MFA = True
             $WV_Happines = WV_Happines - 1
@@ -125,15 +123,9 @@ label question_2:
             wv "Het is tenminste werkbaar voor de mensen. Dan veranderen we elke maand gewoon het laatste cijfertje."
             jump question_3
 
-
-<<<<<<< Updated upstream
         "De medewerjers moeten voor elk account een ander wachtwoord gebruiken en deze moeten telkens helemaal anders zijn.":
             it "De enige echt veilige keuze. Zo zorgen we ervoor dat elk account geïsoleerd en goed afgeschermd is."
             wv "Dit is toch onmogelijk te onthouden?! Dan gaan mensen het gegarandeerd overal op post-its schrijven!"
-=======
-        "De medewerkers moeten voor elk account een ander wachtwoord gebruiken en deze moeten telkens helemaal anders zijn.":
-            narator "Placeholder verschillende wachtwoorden"
->>>>>>> Stashed changes
             $diff_passwords = True
             jump passwrd_safe
 
@@ -156,14 +148,10 @@ label passwrd_safe:
             $WV_Happines = WV_Happines - 1
             jump question_3
 
-<<<<<<< Updated upstream
+
         "Het bedrijf zal €8000 aan de kant zetten om te investeren in wachtwoordenmanagers zodat elke gebruiker een heeft.":
             it "Een hele sterke keuze. Met een betaalde Enterprise-versie beveiligen we de boel én kunnen we accounts centraal beheren en intrekken."
             wv "Kijk, zo hoort het. Als de directie de juiste tools betaalt en faciliteert, werken we daar graag aan mee."
-=======
-        "Het bedrijf zal €8.000 aan de kant zetten om te investeren in wachtwoordenmanagers zodat elke gebruiker een heeft.":
-            narator "placeholder betalende wachtwoordenmanager"
->>>>>>> Stashed changes
             $ geld = geld - 8000
             if (geld < 0):
                 jump failliet
