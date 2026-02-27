@@ -476,20 +476,35 @@ label deel2_question_2:
 
 
 label deel2_question_3:
+    hide cfo
+    show it at it_size, right
     it "Nu we weten dát we gaan back-uppen, moeten we bepalen hóe vaak we dat doen. Dit bepaalt hoeveel werk we kwijt zijn als het misgaat."
+    hide it
+    show cfo at cfo_size, right
     cfo "Hoe vaker we opslaan, hoe meer opslagruimte we nodig hebben. Dat soort verborgen kosten tikken gigantisch aan, dus hou het bescheiden."
     
     menu:
         "Wanneer wordt er geback-upt?"
 
         "toch geen back-ups":
+            if (backups = 2):
+                $ geld = geld + 225000
+            elif (backups = 1):
+                $ geld = geld + 66000
             $ backups = 0
             $ reputatie = reputatie - 5
+            hide cfo
+            show it at it_size, right
+            it "Oh, heb je besloten toch geen back-ups te nemen? Dit lijkt me absoluut geen slime keuze!"
         
         "elk jaar back-uppen (€250.000)":
             $ backups_time = 1
             $ geld = geld - 250000
+            hide cfo
+            show it at it_size, right
             it "Eén keer per jaar?! Als we in november gehackt worden, zijn we letterlijk het werk van de afgelopen elf maanden kwijt!"
+            hide it
+            show cfo at cfo_size, right
             cfo "Maar het is wel de goedkoopste optie. Laten we gewoon zorgen dat we niet gehackt worden, dan is er niets aan de hand."
             if (geld < 0):
                 jump failliet
@@ -499,7 +514,11 @@ label deel2_question_3:
         "elke maand back-uppen (€650.000)":
             $ backups_time = 2
             $ geld = geld - 650000
+            hide cfo
+            show it at it_size, right
             it "Acceptabel, maar in het ergste geval moeten we de orders en administratie van een hele maand handmatig reconstrueren."
+            hide it
+            show cfo at cfo_size, right
             cfo "Zeshonderdvijftigduizend is al heel fors, maar het is een redelijk compromis. Ik ga ermee akkoord."
             if (geld < 0):
                 jump failliet
@@ -510,7 +529,11 @@ label deel2_question_3:
             $ backups_time = 3
             $ geld = geld - 800000
             $ reputatie = reputatie - 5
+            hide cfo
+            show it at it_size, right
             it "Een hele solide keuze. Maximaal een week aan dataverlies is pijnlijk, maar we overleven het wel als bedrijf."
+            hide it
+            show cfo at cfo_size, right
             cfo "Acht ton voor wat kopietjes in de week... Mijn hart kan deze bedragen nauwelijks nog aan."
             if (geld < 0):
                 jump failliet
@@ -522,7 +545,11 @@ label deel2_question_3:
             $ backups_time = 4
             $ geld = geld - 1000000
             $ reputatie = reputatie - 10
+            hide cfo
+            show it at it_size, right
             it "De gouden standaard. Zelfs bij een complete ransomware-aanval verliezen we hooguit het werk van de afgelopen 24 uur."
+            hide it
+            show cfo at cfo_size, right
             cfo "Een miljoen euro?! We betalen ons helemaal blauw aan serverruimte! Dit is absurd!"
             if (geld < 0):
                 jump failliet
@@ -536,10 +563,17 @@ default weakness = 0
 label hack:
     if (phishing_aware):
         $ reputatie = reputatie + 10
+        hide cfo
+        hide it
+        show wv at wv_size, right
         wv "Wacht, een van de werknemers meldt net een extreem overtuigende e-mail over een onbetaalde factuur. Hij herkende het als phishing dankzij de training en klikte niet!"
+        hide wv
+        show it at it_size, right
         it "Fantastisch! Onze menselijke firewall werkt. De eerste aanvalsgolf is afgeslagen."
         jump hack_2
     else:
+        hide cfo
+        show it at it_size, right
         it "Slecht nieuws. Een werknemer trapte in een phishing mail over een onbetaalde factuur en heeft zijn inloggegevens ingevuld."
         menu:
             "Moet de medewerker zijn wachtwoorden veranderen?"
@@ -579,6 +613,8 @@ label hack_2:
             "Wil je de medewerkers verplichten om te updaten?"
 
             "Ja, de medewerkers verplichten om te updaten.":
+                hide it
+                show wv at wv_size, right
                 wv "Je gooit nu letterlijk iedereen uit het systeem! Heel NeXioCo zit nu naar een update-scherm te staren. De productie ligt volledig plat!"
                 $ reputatie = reputatie - 10
                 jump hack_3
@@ -590,6 +626,8 @@ label hack_2:
                 jump hack_3
 
 label hack_3:
+    hide wv
+    show it at it_size, right
     it "Kijk naar deze logs! Ze proberen nu in te loggen met gestolen werknemersgegevens..."
     if not MFA:
         it "We hebben geen Multi-Factor Authenticatie! De hacker is succesvol ingelogd met alleen het wachtwoord. Ze zitten op ons netwerk!"
@@ -610,6 +648,9 @@ label hack_4:
     jump the_aftermatch
 
 label the_aftermatch:
+    hide it
+    show ceo at ceo_size, left
+    show cso at cso_size, right
     ceo "CSO! Kom onmiddellijk naar mijn kantoor!"
     if (weakness < 3):
         ceo "Ik hoorde van IT dat we zwaar onder vuur lagen, maar dat we nagenoeg alles hebben afgeslagen."
@@ -617,6 +658,8 @@ label the_aftermatch:
         $ reputatie = reputatie + 50
     elif (weakness < 6):
         ceo "De hackers zijn binnengedrongen! Ze hebben onze allerbelangrijkste contracten en klantdossiers achter ransomware gezet!"
+        show cso at cso_size, center
+        show it at it_size, right
         if (backups == 1 or backups == 2):
             it "Geen paniek, we hebben gelukkig back-ups van deze bestanden veiliggesteld."
             
@@ -642,6 +685,8 @@ label the_aftermatch:
             $ geld = geld - 70000000
     else:
         ceo "HET HELE BEDRIJF LIGT PLAT! De hackers hebben volledige toegang gekregen en letterlijk elke server en computer versleuteld!"
+        show cso at cso_size, center
+        show it at it_size, right
         if (backups == 2):
             it "Dit is een catastrofe, maar we hebben gelukkig wel een back-up van al onze systemen en servers."
             if (backups_time == 4):
