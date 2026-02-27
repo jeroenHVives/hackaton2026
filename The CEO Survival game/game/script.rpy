@@ -10,7 +10,7 @@ define wv = Character("Werknemer vertegenwoordiger", color="#118afa")
 define cfo = Character("CFO", color="#03fce3")
 define narator = Character(" ")
 
-default geld = 1066000
+default geld = 2500000
 default reputatie = 100
 
 default WV_Happines = 7
@@ -475,12 +475,15 @@ label deel2_question_2:
             jump hack
 
 
-
 label deel2_question_3:
     narator "placeholder om de hoeveel dagen back-uppen."
     
     menu:
         "Wanneer wordt er geback-upt?"
+
+        "toch geen back-ups":
+            $ backups = 0
+            $ reputatie = reputatie - 5
         
         "elk jaar back-uppen (€250.000)":
             $ backups_time = 1
@@ -503,6 +506,7 @@ label deel2_question_3:
         "elke week back-uppen (€800.000)":
             $ backups_time = 3
             $ geld = geld - 800000
+            $ reputatie = reputatie - 5
             narator "placeholder weekelijks back-uppen"
             if (geld < 0):
                 jump failliet
@@ -513,6 +517,7 @@ label deel2_question_3:
         "elke dag back-uppen (€1.000.000)":
             $ backups_time = 4
             $ geld = geld - 1000000
+            $ reputatie = reputatie - 10
             narator "placeholder dagelijks back-uppen"
             if (geld < 0):
                 jump failliet
