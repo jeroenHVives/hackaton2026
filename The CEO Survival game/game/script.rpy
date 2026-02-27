@@ -123,7 +123,7 @@ label question_2:
             wv "Het is tenminste werkbaar voor de mensen. Dan veranderen we elke maand gewoon het laatste cijfertje."
             jump question_3
 
-        "De medewerjers moeten voor elk account een ander wachtwoord gebruiken en deze moeten telkens helemaal anders zijn.":
+        "De medewerkers moeten voor elk account een ander wachtwoord gebruiken en deze moeten telkens helemaal anders zijn.":
             it "De enige echt veilige keuze. Zo zorgen we ervoor dat elk account geïsoleerd en goed afgeschermd is."
             wv "Dit is toch onmogelijk te onthouden?! Dan gaan mensen het gegarandeerd overal op post-its schrijven!"
             $diff_passwords = True
@@ -215,15 +215,18 @@ label question_5:
         "Ja, ze moeten fingerprint scanners gebruiken en we gaan voor iedereen een scanner kopen. Dit zal €40.000 kosten":
             $ MFA = True
             $ geld = geld - 40000
-            $ WV_Happines = WV_Happines - 1
-
-            it "Een flinke investering, maar biometrische MFA is ontzettend lastig te omzeilen voor hackers. Ons netwerk is hiermee veel veiliger."
-
-            if( WV_Happines <= 3):
-                wv "Dit is echt de druppel! Eerst al die andere extreme regels, en nu moeten we ook nog gescand worden alsof we criminelen zijn?! Het werk is hier niet meer te doen!"
+            if (geld < 0):
+                jump failliet
             else:
-                wv "Ik blijf het een inbreuk op de privacy vinden en het kost een fortuin... maar goed, als de directie denkt dat het echt moet."
-            jump intro_deel2
+                $ WV_Happines = WV_Happines - 1
+
+                it "Een flinke investering, maar biometrische MFA is ontzettend lastig te omzeilen voor hackers. Ons netwerk is hiermee veel veiliger."
+
+                if( WV_Happines <= 3):
+                    wv "Dit is echt de druppel! Eerst al die andere extreme regels, en nu moeten we ook nog gescand worden alsof we criminelen zijn?! Het werk is hier niet meer te doen!"
+                else:
+                    wv "Ik blijf het een inbreuk op de privacy vinden en het kost een fortuin... maar goed, als de directie denkt dat het echt moet."
+                jump intro_deel2
 
         "Nee, ze moeten geen fingerprint scanners gebruiken":
             wv "Gelukkig. Laten we onze biometrische gegevens gewoon lekker privé houden. En het bespaart nog geld ook."
@@ -249,7 +252,7 @@ label deel2_question_1:
     cfo "Ik heb de mogelijke offertes gezien en ik schrok me kapot. Die apparaten zijn peperduur. Is dat echt nodig, of kunnen we het met een budgetoplossing af?"
     
     menu:
-        "Welke firewall moet het bedrijf aankopen"
+        "Welke firewall moet het bedrijf aankopen?"
 
         "Het bedrijf moet geen firewall aankopen":
             $ firewall = 0
@@ -319,7 +322,7 @@ label deel2_question_2:
         "Niets back-uppen":
             $ backups = 0
             narator "placeholder niets back-uppen"
-            jump deel2_question_3
+            jump hack
 
 
 label deel2_question_3:
@@ -365,14 +368,14 @@ label deel2_question_3:
                 jump deel2_question_4
 
 label deel2_question_4:
-    narator "placeholder eigen server of externe server":
+    narator "placeholder eigen server of externe server"
     
     menu:
         "Wil je back-uppen op eigen servers of op externe servers?"
         
         "Eigen servers. (€110.000)":
             $ eigen_server = True
-            $ geld = geld - 1000000
+            $ geld = geld - 110000
             narator "placeholder eigen server voor backups"
             if (geld < 0):
                 jump failliet
@@ -392,8 +395,7 @@ default weakness = 0
 default reputatie = 100
 
 label hack:
-    if(phishing_aware):
-        Rep    
+    narator "Je bent gehackt of niet"    
 
 label failliet: 
     narator "Je bedrijf is failliet gegaan"
