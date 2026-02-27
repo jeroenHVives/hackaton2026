@@ -58,7 +58,6 @@ screen money():
             size 22
             color "#ffffff"
 
-
 # The game starts here.
 label start:
     #for the background
@@ -209,6 +208,7 @@ label passwrd_safe:
             show it at it_size, right
             it "Ik zet me alvast schrap voor een explosie aan 'wachtwoord vergeten' tickets bij de helpdesk..."
             $ WV_Happines = WV_Happines - 1
+            $ reputatie = reputatie - 5
             jump question_3
 
 
@@ -264,6 +264,7 @@ label question_4:
 
         "Nee, ze moeten zelf updaten als er een update is.":
             $ WV_Happines = WV_Happines - 1
+            $ reputatie = reputatie - 5
             it "Zolang de medewerkers er maar prioriteit aan geven en ze direct installeren, is het netwerk in ieder geval veilig."
             wv "Dus we moeten nu constant zélf in de gaten houden of er een update is en ons werk daarvoor stilleggen? Dat is echt enorm frustrerend!"
             $ updates = True
@@ -284,16 +285,18 @@ label question_4:
 label question_5:
     it "Een andere vorm van toegangscontrole is biometrie. We kunnen investeren in vingerafdrukscanners voor alle computers."
     wv "Vingerafdrukken? Gaan we nu ook al fysieke kenmerken van ons personeel opslaan? Dat voelt toch wel als een flinke inbreuk op de privacy."
+    jump question_5_menu
+
+label question_5_menu:
     menu:
         "Moeten de medewerkers fingerprint scanners gebruiken om in te loggen?"
 
         "Ja, ze moeten fingerprint scanners gebruiken en we gaan voor iedereen een scanner kopen. Dit zal €40.000 kosten":
-            $ MFA = True
-            $ geld = geld - 40000
-            if (geld < 0):
-                jump failliet
-            else:
+            if (geld >= 40000):
+                $ MFA = True
+                $ geld = geld - 40000
                 $ WV_Happines = WV_Happines - 1
+                $ reputatie = reputatie - 5
 
                 it "Een flinke investering, maar biometrische MFA is ontzettend lastig te omzeilen voor hackers. Ons netwerk is hiermee veel veiliger."
 
@@ -302,6 +305,10 @@ label question_5:
                 else:
                     wv "Ik blijf het een inbreuk op de privacy vinden en het kost een fortuin... maar goed, als de directie denkt dat het echt moet."
                 jump intro_deel2
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump question_5_menu
+                
 
         "Nee, ze moeten geen fingerprint scanners gebruiken":
             wv "Gelukkig. Laten we onze biometrische gegevens gewoon lekker privé houden. En het bespaart nog geld ook."
@@ -325,7 +332,9 @@ label deel2_question_1:
     it "Laten we beginnen met de voordeur van ons bedrijfsnetwerk: de firewall. Met 800 medewerkers stroomt er dagelijks gigantisch veel data in en uit."
     it "We hebben een krachtige Next-Generation Firewall nodig die al dat netwerkverkeer scant op virussen en indringers buiten de deur houdt."
     cfo "Ik heb de mogelijke offertes gezien en ik schrok me kapot. Die apparaten zijn peperduur. Is dat echt nodig, of kunnen we het met een budgetoplossing af?"
-    
+    jump deel2_question_1_menu
+
+label deel2_question_1_menu:
     menu:
         "Welke firewall moet het bedrijf aankopen?"
 
@@ -337,33 +346,38 @@ label deel2_question_1:
 
 
         "Het bedrijf moet een goedkope firewall aankopen. (€ 20.000)":
-            $ firewall = 1
-            $ geld = geld - 20000
-            it "Een instapmodel. Het houdt de meest simpele aanvallen tegen, maar we kopen er maar één. Als dit apparaat crasht, ligt de internetverbinding voor alle 800 medewerkers plat."
-            cfo "Twintigduizend euro is nog net te overzien. Zolang het dat vinkje voor de security-audit maar op groen zet, vind ik het best."
-            if (geld < 0):
-                jump failliet
-            else:
+            if(geld >= 20000)
+                $ firewall = 1
+                $ reputatie = reputatie - 5
+                $ geld = geld - 20000
+                it "Een instapmodel. Het houdt de meest simpele aanvallen tegen, maar we kopen er maar één. Als dit apparaat crasht, ligt de internetverbinding voor alle 800 medewerkers plat."
+                cfo "Twintigduizend euro is nog net te overzien. Zolang het dat vinkje voor de security-audit maar op groen zet, vind ik het best."
                 jump deel2_question_2
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_1_menu
+                
 
         "Het bedrijf moet een iets duurdere firewall aankopen. (€ 60.000)":
             $ firewall = 2
+            $ reputatie = reputatie - 10
             $ geld = geld - 60000
-            it "Een uitstekende en verstandige keuze. Hiermee kopen we twee firewalls die elkaars werk naadloos overnemen als er één uitvalt, mét geavanceerde virusscans."
-            cfo "Zestigduizend euro... Pfft, dat is een flinke hap uit onze winstmarge. Maar goed, als het ons een nog duurdere hack en downtime bespaart, heb je mijn zegen."
             if (geld < 0):
-                jump failliet
+                show screen popup_note("You can't affort this. You only have €[geld].")
             else:
+                it "Een uitstekende en verstandige keuze. Hiermee kopen we twee firewalls die elkaars werk naadloos overnemen als er één uitvalt, mét geavanceerde virusscans."
+                cfo "Zestigduizend euro... Pfft, dat is een flinke hap uit onze winstmarge. Maar goed, als het ons een nog duurdere hack en downtime bespaart, heb je mijn zegen."
                 jump deel2_question_2
 
         "Het bedrijf moet een heel dure firewall aankopen. (€ 120 000)":
             $ firewall = 3
+            $ reputatie = reputatie - 15
             $ geld = geld - 120000
-            it "Perfect! Dit is de absolute top van de markt voor enterprise netwerken. Onverslaanbare netwerksegmentatie, topsnelheid en de allerbeste actieve virusdetectie die we kunnen krijgen."
-            cfo "Honderdtwintigduizend euro?! Ben je je verstand verloren? Dit is zwaar overdreven en slaat een gigantisch gat in onze kas!"
             if (geld < 0):
-                jump failliet
+                show screen popup_note("You can't affort this. You only have €[geld].")
             else:
+                it "Perfect! Dit is de absolute top van de markt voor enterprise netwerken. Onverslaanbare netwerksegmentatie, topsnelheid en de allerbeste actieve virusdetectie die we kunnen krijgen."
+                cfo "Honderdtwintigduizend euro?! Ben je je verstand verloren? Dit is zwaar overdreven en slaat een gigantisch gat in onze kas!"
                 jump deel2_question_2
 
 label deel2_question_2:
@@ -376,22 +390,24 @@ label deel2_question_2:
 
         "Alles back-uppen. (computers, documenten, mails, shares ...) (€225.000)":
             $ backups = 2
+            $ reputatie = reputatie - 10
             $ geld = geld - 225000
-            it "Een fantastische keuze. Mocht er een ramp gebeuren, dan kunnen we letterlijk het hele bedrijf inclusief alle mailboxen en pc-instellingen binnen no-time herstellen."
-            cfo "Tweehonderdvijfentwintigduizend euro?! Dit is te bizar voor woorden! We betalen een kwart miljoen voor het opslaan van gigabytes aan nutteloze e-mails en kattenplaatjes van het personeel!"
             if (geld < 0):
-                jump failliet
+                show screen popup_note("You can't affort this. You only have €[geld].")
             else:
+                it "Een fantastische keuze. Mocht er een ramp gebeuren, dan kunnen we letterlijk het hele bedrijf inclusief alle mailboxen en pc-instellingen binnen no-time herstellen."
+                cfo "Tweehonderdvijfentwintigduizend euro?! Dit is te bizar voor woorden! We betalen een kwart miljoen voor het opslaan van gigabytes aan nutteloze e-mails en kattenplaatjes van het personeel!"
                 jump deel2_question_3
 
         "Alleen de documenten back-uppen (€66.000)":
             $ backups = 1
+            $ repuatie = reputatie - 5
             $ geld = geld - 66000
-            it "Een werkbaar compromis. De harde bedrijfsdata is veilig, al zijn we bij een hack wel alle e-mailhistorie en individuele computerinstellingen kwijt."
-            cfo "Kijk, zesenzestigduizend euro klinkt al een stuk logischer. De essentiële contracten zijn veilig, en de rest is toch maar ballast."
             if (geld < 0):
-                jump failliet
+                show screen popup_note("You can't affort this. You only have €[geld].")
             else:
+                it "Een werkbaar compromis. De harde bedrijfsdata is veilig, al zijn we bij een hack wel alle e-mailhistorie en individuele computerinstellingen kwijt."
+                cfo "Kijk, zesenzestigduizend euro klinkt al een stuk logischer. De essentiële contracten zijn veilig, en de rest is toch maar ballast."    
                 jump deel2_question_3
         
         "Niets back-uppen":
@@ -403,7 +419,7 @@ label deel2_question_2:
 
 
 label deel2_question_3:
-    it "Nu we weten dát we gaan back-uppen, moeten we bepalen hóe vaak we dat doen. Dit bepaalt hoeveel werk we kwijt zijn als het misgaat."
+    it "Nu we weten dat we gaan back-uppen, moeten we bepalen hóe vaak we dat doen. Dit bepaalt hoeveel werk we kwijt zijn als het misgaat."
     cfo "Hoe vaker we opslaan, hoe meer opslagruimte we nodig hebben. Dat soort verborgen kosten tikken gigantisch aan, dus hou het bescheiden."
     
     menu:
@@ -411,70 +427,50 @@ label deel2_question_3:
         
         "elk jaar back-uppen (€250.000)":
             $ backups_time = 1
+            $ reputatie =  reputatie - 5
             $ geld = geld - 250000
-            it "Eén keer per jaar?! Als we in november gehackt worden, zijn we letterlijk het werk van de afgelopen elf maanden kwijt!"
-            cfo "Maar het is wel de goedkoopste optie. Laten we gewoon zorgen dat we niet gehackt worden, dan is er niets aan de hand."
             if (geld < 0):
-                jump failliet
+                show screen popup_note("You can't affort this. You only have €[geld].")
             else:
+                it "Eén keer per jaar?! Als we in november gehackt worden, zijn we letterlijk het werk van de afgelopen elf maanden kwijt!"
+                cfo "Maar het is wel de goedkoopste optie. Laten we gewoon zorgen dat we niet gehackt worden, dan is er niets aan de hand."
                 jump deel2_question_4
 
         "elke maand back-uppen (€650.000)":
             $ backups_time = 2
+            $ reputatie = reputatie - 10
             $ geld = geld - 650000
-            it "Acceptabel, maar in het ergste geval moeten we de orders en administratie van een hele maand handmatig reconstrueren."
-            cfo "Zeshonderdvijftigduizend is al heel fors, maar het is een redelijk compromis. Ik ga ermee akkoord."
             if (geld < 0):
-                jump failliet
+                show screen popup_note("You can't affort this. You only have €[geld].")
             else:
+                it "Acceptabel, maar in het ergste geval moeten we de orders en administratie van een hele maand handmatig reconstrueren."
+                cfo "Zeshonderdvijftigduizend is al heel fors, maar het is een redelijk compromis. Ik ga ermee akkoord."
                 jump hack
 
         "elke week back-uppen (€800.000)":
             $ backups_time = 3
+            $ reputatie = reputatie - 15
             $ geld = geld - 800000
-            it "Een hele solide keuze. Maximaal een week aan dataverlies is pijnlijk, maar we overleven het wel als bedrijf."
-            cfo "Acht ton voor wat kopietjes in de week... Mijn hart kan deze bedragen nauwelijks nog aan."
             if (geld < 0):
-                jump failliet
+                show screen popup_note("You can't affort this. You only have €[geld].")
             else:
+                it "Een hele solide keuze. Maximaal een week aan dataverlies is pijnlijk, maar we overleven het wel als bedrijf."
+                cfo "Acht ton voor wat kopietjes in de week... Mijn hart kan deze bedragen nauwelijks nog aan."
                 jump hack
                 #jump deel2_question_4
         
         "elke dag back-uppen (€1.000.000)":
             $ backups_time = 4
+            $ reputatie = reputatie - 20
             $ geld = geld - 1000000
-            it "De gouden standaard. Zelfs bij een complete ransomware-aanval verliezen we hooguit het werk van de afgelopen 24 uur."
-            cfo "Een miljoen euro?! We betalen ons helemaal blauw aan serverruimte! Dit is absurd!"
             if (geld < 0):
-                jump failliet
+                show screen popup_note("You can't affort this. You only have €[geld].")
             else:
+                it "De gouden standaard. Zelfs bij een complete ransomware-aanval verliezen we hooguit het werk van de afgelopen 24 uur."
+                cfo "Een miljoen euro?! We betalen ons helemaal blauw aan serverruimte! Dit is absurd!"
                 jump hack
                 #jump deel2_question_4
 
-"""label deel2_question_4:
-    narator "placeholder eigen server of externe server"
-    
-    menu:
-        "Wil je back-uppen op eigen servers of op externe servers?"
-        
-        "Eigen servers. (€110.000)":
-            $ eigen_server = True
-            $ geld = geld - 110000
-            narator "placeholder eigen server voor backups"
-            if (geld < 0):
-                jump failliet
-            else:
-                jump hack
-
-        "Externe servers (€90.000)":
-            $ eigen_server = False
-            $ geld = geld - 90000
-            narator "placeholder externe server voor backups"
-            if (geld < 0):
-                jump failliet
-            else:
-                jump hack
-"""
 default weakness = 0
 
 label hack:
