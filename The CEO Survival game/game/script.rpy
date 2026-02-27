@@ -484,11 +484,55 @@ label the_aftermatch:
         if (backups == 1 or backups == 2):
             narator "placeholder weinig schade"
             if (backups_time == 4):
+                narator "placeholder dagelijks backuppen"
                 $ reputatie = reputatie - 5
             elif (backups_time == 3):
+                narator "placeholder weeklijks backuppen"
                 $ reputatie = reputatie - 15
             elif (backups_time == 2):
+                narator "placeholder maandelijks backuppen"
                 $ reputatie = reputatie - 25
+                narator "placeholder gemiddelde som (€6.000.000)"
+                $ geld = geld - 6000000
+            else:
+                narator "placeholder jaarlijkse backuppen"
+                $ reputatie = reputatie - 25
+                narator "placeholder grote som (€55.000.000)"
+                $ geld = geld - 55000000
+        else:
+            narator "placeholder geen backups (€70.000.000)"
+            $ reputatie = reputatie - 50
+            $ geld = geld - 70000000
+    else:
+        narator "placeholder gehackt en alles achter ransomware"
+        if (backups == 2):
+            narator "placeholder weinig schade"
+            if (backups_time == 4):
+                narator "placeholder dagelijks backuppen"
+                $ reputatie = reputatie - 5
+            elif (backups_time == 3):
+                narator "placeholder weeklijks backuppen"
+                $ reputatie = reputatie - 15
+            elif (backups_time == 2):
+                narator "placeholder maandelijks backuppen"
+                $ reputatie = reputatie - 25
+                narator "placeholder gemiddelde som (€14.000.000)"
+                $ geld = geld - 14000000
+            else:
+                narator "placeholder jaarlijks backuppen"
+                $ reputatie = reputatie - 25
+                narator "placeholder grote som (€95.000.000)"
+                $ geld = geld - 95000000
+        elif (backups == 1):
+            narator "placeholder alleen files geback-upt (€150.000.000)"
+            $ reputatie = reputatie - 50
+            $ geld = geld - 150000000
+        else:
+            narator "placeholder geen backups (€200.000.000)"
+            $ reputatie = reputatie - 100
+            $ geld = geld - 200000000
+    
+
 
 
 
