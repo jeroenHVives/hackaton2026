@@ -602,12 +602,7 @@ label the_aftermatch:
             narator "placeholder geen backups (€200.000.000)"
             $ reputatie = reputatie - 100
             $ geld = geld - 200000000
-<<<<<<< HEAD
     if geld < 0:
         jump failliet
     else:
         jump the_end
-=======
-
-
->>>>>>> 8a870a7602af4d6662f0e127aaba1318c6ee670e
