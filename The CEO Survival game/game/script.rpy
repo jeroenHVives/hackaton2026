@@ -10,7 +10,7 @@ define wv = Character("Werknemer vertegenwoordiger", color="#118afa")
 define cfo = Character("CFO", color="#03fce3")
 define narator = Character(" ")
 
-default geld = 2500000
+default geld = 1100000
 default reputatie = 100
 
 default WV_Happines = 7
@@ -232,22 +232,30 @@ label question_3:
     hide it
     show wv at wv_size, right
     wv "De meeste mensen hebben echt wel door of een mail nep is of niet. We hoeven ze daar niet voor van hun werk te houden met verplichte theorie."
+    jump question_3_menu
+
+label question_3_menu:
     default awareness = renpy.random.randint(1,4)
     menu:
         "Moeten de werknemers een phishing awareness training doen?"
 
-        "Ja, de medewerkerkers moeten een phishing awareness training doen.":
-            hide wv
-            show it at it_size, right
-            it "Een verstandige keuze. Door ze te trainen, maken we van onze medewerkers een sterke verdedigingslinie."
-            hide it
-            show wv at wv_size, right
-            wv "Daar gaan weer kostbare uren naar een verplichte cursus... De werkvloer zal hier echt niet blij mee zijn."
-            $ WV_Happines = WV_Happines - 1
-            $ reputatie = reputatie - 5
-            if (awareness <= 3):
-                $ phishing_aware = True
-            jump question_4
+        "Ja, de medewerkerkers moeten een phishing awareness training doen. (€20.000)":
+            if (geld > 20000):
+                $ geld = geld - 20000
+                hide wv
+                show it at it_size, right
+                it "Een verstandige keuze. Door ze te trainen, maken we van onze medewerkers een sterke verdedigingslinie."
+                hide it
+                show wv at wv_size, right
+                wv "Daar gaan weer kostbare uren naar een verplichte cursus... De werkvloer zal hier echt niet blij mee zijn."
+                $ WV_Happines = WV_Happines - 1
+                $ reputatie = reputatie - 5
+                if (awareness <= 3):
+                    $ phishing_aware = True
+                jump question_4
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump question_3_menu
         
         "Nee, de medewerkers zijn niet verplicht om een phishing awareness training doen.":
             hide it
@@ -390,7 +398,7 @@ label deel2_question_1_menu:
 
 
         "Het bedrijf moet een goedkope firewall aankopen. (€ 20.000)":
-            if(geld >= 20000)
+            if(geld >= 20000):
                 $ firewall = 1
                 $ reputatie = reputatie - 5
                 $ geld = geld - 20000
@@ -407,40 +415,37 @@ label deel2_question_1_menu:
                 
 
         "Het bedrijf moet een iets duurdere firewall aankopen. (€ 60.000)":
-            $ firewall = 2
-            $ reputatie = reputatie - 10
-            $ geld = geld - 60000
-            $ reputatie = reputatie - 5
-            hide cfo
-            show it at it_size, right
-            it "Een uitstekende en verstandige keuze. Hiermee kopen we twee firewalls die elkaars werk naadloos overnemen als er één uitvalt, mét geavanceerde virusscans."
-            hide it
-            show cfo at cfo_size, right
-            cfo "Zestigduizend euro... Pfft, dat is een flinke hap uit onze winstmarge. Maar goed, als het ons een nog duurdere hack en downtime bespaart, heb je mijn zegen."
-            if (geld < 0):
-                show screen popup_note("You can't affort this. You only have €[geld].")
-            else:
+            if (geld > 60000):
+                $ firewall = 2
+                $ reputatie = reputatie - 10
+                $ geld = geld - 60000
+                $ reputatie = reputatie - 5
+                hide cfo
+                show it at it_size, right
                 it "Een uitstekende en verstandige keuze. Hiermee kopen we twee firewalls die elkaars werk naadloos overnemen als er één uitvalt, mét geavanceerde virusscans."
+                hide it
+                show cfo at cfo_size, right
                 cfo "Zestigduizend euro... Pfft, dat is een flinke hap uit onze winstmarge. Maar goed, als het ons een nog duurdere hack en downtime bespaart, heb je mijn zegen."
                 jump deel2_question_2
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_1_menu
 
         "Het bedrijf moet een heel dure firewall aankopen. (€ 120 000)":
-            $ firewall = 3
-            $ reputatie = reputatie - 15
-            $ geld = geld - 120000
-            $ reputatie = reputatie - 10
-            hide cfo
-            show it at it_size, right
-            it "Perfect! Dit is de absolute top van de markt voor enterprise netwerken. Onverslaanbare netwerksegmentatie, topsnelheid en de allerbeste actieve virusdetectie die we kunnen krijgen."
-            hide it
-            show cfo at cfo_size, right
-            cfo "Honderdtwintigduizend euro?! Ben je je verstand verloren? Dit is zwaar overdreven en slaat een gigantisch gat in onze kas!"
-            if (geld < 0):
-                show screen popup_note("You can't affort this. You only have €[geld].")
-            else:
+            if(geld > 120000):
+                $ firewall = 3
+                $ reputatie = reputatie - 15
+                $ geld = geld - 120000
+                $ reputatie = reputatie - 10
+                hide cfo
+                show it at it_size, right
                 it "Perfect! Dit is de absolute top van de markt voor enterprise netwerken. Onverslaanbare netwerksegmentatie, topsnelheid en de allerbeste actieve virusdetectie die we kunnen krijgen."
+                hide it
+                show cfo at cfo_size, right
                 cfo "Honderdtwintigduizend euro?! Ben je je verstand verloren? Dit is zwaar overdreven en slaat een gigantisch gat in onze kas!"
-                jump deel2_question_2
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_1_menu
 
 label deel2_question_2:
     hide cfo
@@ -450,44 +455,44 @@ label deel2_question_2:
     hide it
     show cfo at cfo_size, right
     cfo "Ik weet dat we data moeten bewaren, maar ik zie ook de facturen van die cloud-opslag. Het kost ons handenvol geld om dingen dubbel op te slaan."
+    jump deel2_question_2_menu
 
+label deel2_question_2_menu:
     menu:
         "Wat gaan we back-uppen?"
 
         "Alles back-uppen. (computers, documenten, mails, shares ...) (€225.000)":
-            $ backups = 2
-            $ reputatie = reputatie - 10
-            $ geld = geld - 225000
-            $ reputatie = reputatie - 10
-            hide cfo
-            show it at it_size, right
-            it "Een fantastische keuze. Mocht er een ramp gebeuren, dan kunnen we letterlijk het hele bedrijf inclusief alle mailboxen en pc-instellingen binnen no-time herstellen."
-            hide it
-            show cfo at cfo_size, right
-            cfo "Tweehonderdvijfentwintigduizend euro?! Dit is te bizar voor woorden! We betalen een kwart miljoen voor het opslaan van gigabytes aan nutteloze e-mails en kattenplaatjes van het personeel!"
-            if (geld < 0):
-                show screen popup_note("You can't affort this. You only have €[geld].")
-            else:
+            if (geld > 225000):
+                $ backups = 2
+                $ reputatie = reputatie - 10
+                $ geld = geld - 225000
+                $ reputatie = reputatie - 10
+                hide cfo
+                show it at it_size, right
                 it "Een fantastische keuze. Mocht er een ramp gebeuren, dan kunnen we letterlijk het hele bedrijf inclusief alle mailboxen en pc-instellingen binnen no-time herstellen."
+                hide it
+                show cfo at cfo_size, right
                 cfo "Tweehonderdvijfentwintigduizend euro?! Dit is te bizar voor woorden! We betalen een kwart miljoen voor het opslaan van gigabytes aan nutteloze e-mails en kattenplaatjes van het personeel!"
                 jump deel2_question_3
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_2_menu
 
         "Alleen de documenten back-uppen (€66.000)":
-            $ backups = 1
-            $ repuatie = reputatie - 5
-            $ geld = geld - 66000
-            hide cfo
-            show it at it_size, right
-            it "Een werkbaar compromis. De harde bedrijfsdata is veilig, al zijn we bij een hack wel alle e-mailhistorie en individuele computerinstellingen kwijt."
-            hide it
-            show cfo at cfo_size, right
-            cfo "Kijk, zesenzestigduizend euro klinkt al een stuk logischer. De essentiële contracten zijn veilig, en de rest is toch maar ballast."
-            if (geld < 0):
-                show screen popup_note("You can't affort this. You only have €[geld].")
-            else:
+            if (geld > 66000):
+                $ backups = 1
+                $ repuatie = reputatie - 5
+                $ geld = geld - 66000
+                hide cfo
+                show it at it_size, right
                 it "Een werkbaar compromis. De harde bedrijfsdata is veilig, al zijn we bij een hack wel alle e-mailhistorie en individuele computerinstellingen kwijt."
-                cfo "Kijk, zesenzestigduizend euro klinkt al een stuk logischer. De essentiële contracten zijn veilig, en de rest is toch maar ballast."    
+                hide it
+                show cfo at cfo_size, right
+                cfo "Kijk, zesenzestigduizend euro klinkt al een stuk logischer. De essentiële contracten zijn veilig, en de rest is toch maar ballast."
                 jump deel2_question_3
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_2_menu
         
         "Niets back-uppen":
             $ backups = 0
@@ -499,6 +504,7 @@ label deel2_question_2:
             cfo "Kijk, dat is weer nul euro op de begroting. Bovendien hebben we net geld uitgegeven aan de voordeur, toch? Zorg dan gewoon dat die hackers überhaupt niet binnenkomen."
             jump hack
 
+    
 
 label deel2_question_3:
     hide cfo
@@ -507,7 +513,9 @@ label deel2_question_3:
     hide it
     show cfo at cfo_size, right
     cfo "Hoe vaker we opslaan, hoe meer opslagruimte we nodig hebben. Dat soort verborgen kosten tikken gigantisch aan, dus hou het bescheiden."
-    
+    jump deel2_question_3_menu
+
+label deel2_question_3_menu:
     menu:
         "Wanneer wordt er geback-upt?"
 
@@ -521,77 +529,74 @@ label deel2_question_3:
             hide cfo
             show it at it_size, right
             it "Oh, heb je besloten toch geen back-ups te nemen? Dit lijkt me absoluut geen slime keuze!"
+            jump hack
         
         "elk jaar back-uppen (€250.000)":
-            $ backups_time = 1
-            $ reputatie =  reputatie - 5
-            $ geld = geld - 250000
-            hide cfo
-            show it at it_size, right
-            it "Eén keer per jaar?! Als we in november gehackt worden, zijn we letterlijk het werk van de afgelopen elf maanden kwijt!"
-            hide it
-            show cfo at cfo_size, right
-            cfo "Maar het is wel de goedkoopste optie. Laten we gewoon zorgen dat we niet gehackt worden, dan is er niets aan de hand."
-            if (geld < 0):
-                show screen popup_note("You can't affort this. You only have €[geld].")
-            else:
+            if (geld > 250000):
+                $ backups_time = 1
+                $ reputatie =  reputatie - 5
+                $ geld = geld - 250000
+                hide cfo
+                show it at it_size, right
                 it "Eén keer per jaar?! Als we in november gehackt worden, zijn we letterlijk het werk van de afgelopen elf maanden kwijt!"
+                hide it
+                show cfo at cfo_size, right
                 cfo "Maar het is wel de goedkoopste optie. Laten we gewoon zorgen dat we niet gehackt worden, dan is er niets aan de hand."
-                jump deel2_question_4
+                jump hack
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_3_menu
 
         "elke maand back-uppen (€650.000)":
-            $ backups_time = 2
-            $ reputatie = reputatie - 10
-            $ geld = geld - 650000
-            hide cfo
-            show it at it_size, right
-            it "Acceptabel, maar in het ergste geval moeten we de orders en administratie van een hele maand handmatig reconstrueren."
-            hide it
-            show cfo at cfo_size, right
-            cfo "Zeshonderdvijftigduizend is al heel fors, maar het is een redelijk compromis. Ik ga ermee akkoord."
-            if (geld < 0):
-                show screen popup_note("You can't affort this. You only have €[geld].")
-            else:
+            if (geld > 650000):
+                $ backups_time = 2
+                $ reputatie = reputatie - 10
+                $ geld = geld - 650000
+                hide cfo
+                show it at it_size, right
                 it "Acceptabel, maar in het ergste geval moeten we de orders en administratie van een hele maand handmatig reconstrueren."
+                hide it
+                show cfo at cfo_size, right
                 cfo "Zeshonderdvijftigduizend is al heel fors, maar het is een redelijk compromis. Ik ga ermee akkoord."
                 jump hack
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_3_menu
 
         "elke week back-uppen (€800.000)":
-            $ backups_time = 3
-            $ reputatie = reputatie - 15
-            $ geld = geld - 800000
-            $ reputatie = reputatie - 5
-            hide cfo
-            show it at it_size, right
-            it "Een hele solide keuze. Maximaal een week aan dataverlies is pijnlijk, maar we overleven het wel als bedrijf."
-            hide it
-            show cfo at cfo_size, right
-            cfo "Acht ton voor wat kopietjes in de week... Mijn hart kan deze bedragen nauwelijks nog aan."
-            if (geld < 0):
-                show screen popup_note("You can't affort this. You only have €[geld].")
-            else:
+            if (geld > 800000):
+                $ backups_time = 3
+                $ reputatie = reputatie - 15
+                $ geld = geld - 800000
+                $ reputatie = reputatie - 5
+                hide cfo
+                show it at it_size, right
                 it "Een hele solide keuze. Maximaal een week aan dataverlies is pijnlijk, maar we overleven het wel als bedrijf."
+                hide it
+                show cfo at cfo_size, right
                 cfo "Acht ton voor wat kopietjes in de week... Mijn hart kan deze bedragen nauwelijks nog aan."
                 jump hack
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_3_menu
                 #jump deel2_question_4
         
         "elke dag back-uppen (€1.000.000)":
-            $ backups_time = 4
-            $ reputatie = reputatie - 20
-            $ geld = geld - 1000000
-            $ reputatie = reputatie - 10
-            hide cfo
-            show it at it_size, right
-            it "De gouden standaard. Zelfs bij een complete ransomware-aanval verliezen we hooguit het werk van de afgelopen 24 uur."
-            hide it
-            show cfo at cfo_size, right
-            cfo "Een miljoen euro?! We betalen ons helemaal blauw aan serverruimte! Dit is absurd!"
-            if (geld < 0):
-                show screen popup_note("You can't affort this. You only have €[geld].")
-            else:
+            if (geld > 1000000):
+                $ backups_time = 4
+                $ reputatie = reputatie - 20
+                $ geld = geld - 1000000
+                $ reputatie = reputatie - 10
+                hide cfo
+                show it at it_size, right
                 it "De gouden standaard. Zelfs bij een complete ransomware-aanval verliezen we hooguit het werk van de afgelopen 24 uur."
+                hide it
+                show cfo at cfo_size, right
                 cfo "Een miljoen euro?! We betalen ons helemaal blauw aan serverruimte! Dit is absurd!"
                 jump hack
+            else:
+                $ renpy.notify("Je hebt niet genoeg geld hiervoor!")
+                jump deel2_question_3_menu
                 #jump deel2_question_4
 
 default weakness = 0
