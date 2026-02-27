@@ -529,12 +529,3 @@ label the_aftermatch:
             $ geld = geld - 200000000
 
 
-label failliet: 
-    narator "Je bedrijf is failliet gegaan"
-
-    return
-
-label the_end:
-    narator "placeholder for end result"
-    # This ends the game.
-    return
