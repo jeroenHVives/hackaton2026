@@ -5,6 +5,7 @@
 # name of the character.
 define cso = Character("CSO", color="#e7eb0e")
 define ceo = Character("CEO", color="#faa911")
+define cfo = Character("CFO", color="#03fce3")
 define it = Character("IT consultant", color="#29fa11")
 define narator = Character(" ")
 define wv = Character("Werknemer vertegenwoordiger", color="#118afa")
@@ -401,7 +402,95 @@ default weakness = 0
 default reputatie = 100
 
 label hack:
-    narator "Je bent gehackt of niet"    
+    if (phishing_aware):
+        $ reputatie = reputatie + 10
+        narator "placeholder phishing aware"
+        jump hack_2
+    else:
+        narator "placeholder niet phishing aware (medewerker heeft op een link geklikt)"
+        menu:
+            "Moet de medewerker zijn wachtwoorden veranderen?"
+
+            "Hij moet zijn wachtwoorden niet aanpassen.":
+                narator "placeholder ww niet aanpassen"
+                if (diff_passwords):
+                    $ weakness = weakness + 1
+                else:
+                    $ weakness = weakness + 2
+                jump hack_2
+
+            "Hij moet alleen dat wachtwoord aanpassen.":
+                if !(diff_passwords):
+                    $ weakness = weakness + 2
+                $ reputatie = reputatie - 5   
+                narator "placeholder alleen dat ww aanpassen"           
+                jump hack_2
+
+            "Hij moet al zijn wachtwoorden aanpassen.":
+                $ reputatie = reputatie - 15
+                narator "placeholder alle ww aanpassen"
+                jump hack_2
+  
+label hack_2:
+    narator "placeholder weakness in vorige versie"
+    if (updates):
+        narator "placeholder laatste versie dus veilig"
+        $ reputatie = reputatie + 5
+        jump hack_3
+    else:
+        $ weakness = weakness + 1
+        $ reputatie = reputatie - 5
+        menu:
+            "Wil je de medewerkers verplichten om te updaten?"
+
+            "Ja, de medewerkers verplichten om te updaten.":
+                narator "placeholder verplicht updaten"
+                $ reputatie = reputatie - 10
+                jump hack_3
+            
+            "Nee, de medewerkers niet verplichten om te updaten.":
+                narator "placeholder niet verplicht updaten"
+                $ reputatie = reputatie - 5
+                $ weakness = weakness + 1
+                jump hack_3
+
+label hack_3:
+    narator "placeholder MFA hack"
+    if !(MFA):
+        narator "placeholder geen MFA"
+        $ weakness = weakness + 1
+    else:
+        narator "placeholder MFA"
+    jump hack_4
+
+label hack_4:
+    narator "placeholder firewall hack"
+    if (firewall == 0):
+        narator "placeholder geen firewall"
+    elif (firewall == 1):
+        narator "placeholder goedkope firewall"
+    else:
+        narator "placeholder dure firewall"
+    $ weakness = weakness + (3-firewall)
+    jump the_aftermatch
+
+label the_aftermatch:
+    narator "placeholder the aftermatch"
+    if (weakness < 3):
+        narator "placeholder niet gehackt"
+        $ reputatie = reputatie + 50
+    elif (weakness < 6):
+        narator "placeholder gehackt en files achter ransomware"
+        if (backups == 1 or backups == 2):
+            narator "placeholder weinig schade"
+            if (backups_time == 4):
+                $ reputatie = reputatie - 5
+            elif (backups_time == 3):
+                $ reputatie = reputatie - 15
+            elif (backups_time == 2):
+                $ reputatie = reputatie - 25
+
+
 
 label failliet: 
     narator "Je bedrijf is failliet gegaan"
