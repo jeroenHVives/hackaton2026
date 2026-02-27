@@ -10,7 +10,7 @@ define wv = Character("Werknemer vertegenwoordiger", color="#118afa")
 define cfo = Character("CFO", color="#03fce3")
 define narator = Character(" ")
 
-default geld = 1066000
+default geld = 2500000
 default reputatie = 100
 
 default WV_Happines = 7
@@ -34,6 +34,9 @@ transform it_size:
 
 transform wv_size:
     zoom 0.60
+
+transform cfo_size:
+    zoom 0.5
 
 transform small_size: 
     zoom 0.13 #adjust as required
@@ -67,11 +70,11 @@ label start:
 
     show screen money()
 
-    ceo "Ah, kom verder. Ga zitten. Welkom bij NeXioCo."
+    ceo "Ah, kom verder. Ga zitten. Welkom bij NeXiCo."
     ceo "Je weet waarom we je hebben aangenomen. Ons bedrijf is de afgelopen jaren geëxplodeerd. We hebben inmiddels 800 werknemers op de loonlijst, we draaien miljoenenomzetten, maar als ik heel eerlijk ben... onze IT-security is een gatenkaas."
     ceo "Daarom ben jij nu onze Chief Security Officer. Jij krijgt de leiding over ons budget en jij bepaalt vanaf vandaag welke maatregelen we wel en niet doorvoeren."
     cso "Ik ben er klaar voor. Waar beginnen we mee?"
-    ceo "We hebben een externe IT-consultant ingehuurd. Zij heeft ons hele bedrijf geanalyseerd en een lijst met mogelijke securitymaatregelen voorbereid."
+    ceo "We hebben een externe IT-consultant ingehuurd. Hij heeft ons hele bedrijf geanalyseerd en een lijst met mogelijke securitymaatregelen voorbereid."
     ceo "Het is aan jou om haar voorstellen te beoordelen. Jij hakt de knopen door over wat we wel en niet gaan invoeren. Weeg de kosten af tegen de risico's voor het bedrijf."
     ceo "Je zult harde keuzes moeten maken. Succes. Ze wachten op je in de vergaderzaal."
 
@@ -240,6 +243,8 @@ label question_3:
             hide it
             show wv at wv_size, right
             wv "Daar gaan weer kostbare uren naar een verplichte cursus... De werkvloer zal hier echt niet blij mee zijn."
+            $ WV_Happines = WV_Happines - 1
+            $ reputatie = reputatie - 5
             if (awareness <= 3):
                 $ phishing_aware = True
             jump question_4
@@ -256,34 +261,53 @@ label question_3:
             jump question_4
 
 label question_4:
+    hide wv
+    show it at it_size, right
     it "Het volgende punt gaat over software-updates. Verouderde software bevat vaak beveiligingslekken die hackers gemakkelijk kunnen misbruiken."
+    hide it
+    show wv at wv_size, right
     wv "Maar die updates komen altijd op het slechtste moment! Je bent net geconcentreerd bezig en dan eist je computer ineens een herstart van een kwartier."
 
     menu:
         "Moeten de medewerkers auto-update aanzetten?"
 
         "Nee, ze moeten zelf updaten als er een update is.":
+            hide wv
+            show it at it_size, right
+            it "Zolang de medewerkers er maar prioriteit aan geven en ze direct installeren, is het netwerk in ieder geval veilig."
+            hide it
+            show wv at wv_size, right
+            wv "Dus we moeten nu constant zélf in de gaten houden of er een update is en ons werk daarvoor stilleggen? Dat is echt enorm frustrerend!"
             $ WV_Happines = WV_Happines - 1
             $ reputatie = reputatie - 5
-            it "Zolang de medewerkers er maar prioriteit aan geven en ze direct installeren, is het netwerk in ieder geval veilig."
-            wv "Dus we moeten nu constant zélf in de gaten houden of er een update is en ons werk daarvoor stilleggen? Dat is echt enorm frustrerend!"
             $ updates = True
             jump question_5
 
         "Nee, ze zijn niet verplicht om updates te doen.":
+            hide it
+            show wv at wv_size, right
             wv "Mooi, dan bepalen we zelf wel of en wanneer we er tijd voor hebben. Dat scheelt een hoop onnodige werkonderbrekingen."
+            hide wv
+            show it at it_size, right
             it "Dit is echt een tijdbom. Bekende kwetsbaarheden in onze systemen blijven zo simpelweg openstaan voor aanvallers."
             jump question_5
 
         "Ja, ze zijn verplicht om auto updates aan te zetten.":
+            hide wv
+            show it at it_size, right
             it "Perfect. Met automatische updates worden de lekken meteen gedicht zonder dat iemand eraan hoeft te denken."
+            hide it
+            show wv at wv_size, right
             wv "Zolang de computers dat updaten maar 's nachts of op de achtergrond doen, scheelt het ons in ieder geval handmatig werk..."
-            $ updates = True
             $ updates = True 
             jump question_5         
 
 label question_5:
+    hide wv
+    show it at it_size, right
     it "Een andere vorm van toegangscontrole is biometrie. We kunnen investeren in vingerafdrukscanners voor alle computers."
+    hide it
+    show wv at wv_size, right
     wv "Vingerafdrukken? Gaan we nu ook al fysieke kenmerken van ons personeel opslaan? Dat voelt toch wel als een flinke inbreuk op de privacy."
     jump question_5_menu
 
@@ -298,8 +322,12 @@ label question_5_menu:
                 $ WV_Happines = WV_Happines - 1
                 $ reputatie = reputatie - 5
 
+                hide wv
+                show it at it_size, right
                 it "Een flinke investering, maar biometrische MFA is ontzettend lastig te omzeilen voor hackers. Ons netwerk is hiermee veel veiliger."
-
+                hide it
+                show wv at wv_size, right
+                
                 if( WV_Happines <= 3):
                     wv "Dit is echt de druppel! Eerst al die andere extreme regels, en nu moeten we ook nog gescand worden alsof we criminelen zijn?! Het werk is hier niet meer te doen!"
                 else:
@@ -311,7 +339,11 @@ label question_5_menu:
                 
 
         "Nee, ze moeten geen fingerprint scanners gebruiken":
+            hide it
+            show wv at wv_size, right
             wv "Gelukkig. Laten we onze biometrische gegevens gewoon lekker privé houden. En het bespaart nog geld ook."
+            hide wv
+            show it at it_size, right
             it "Jammer. Ik begrijp dat de kosten hoog zijn, maar we laten hiermee wel een ijzersterke beveiligingslaag liggen."
             jump intro_deel2
         
@@ -321,16 +353,24 @@ default backups = 0
 default backups_time = 0
 default eigen_server = False
 
-label intro_deel2:        
+label intro_deel2:
+    hide wv
+    show it at it_size, right      
     it "Goed, we hebben de beleidsafspraken voor het personeel nu rond. De werknemervertegenwoordiger kan weer aan het werk."
     it "Nu we het gaan hebben over de harde IT-infrastructuur en de grote systemen, heb ik iemand anders aan tafel gevraagd."
+    hide it
+    show cfo at cfo_size, right  
     cfo "Goedemiddag. Als Chief Financial Officer houd ik de portemonnee van NeXioCo strak in de gaten. Ik hoor dat deze hardware-plannen in de tienduizenden euro's gaan lopen."
     cfo "We hebben geen bodemloze put als budget, CSO. Elke euro die we aan 'onzichtbare' security uitgeven, kunnen we niet in onze groei steken. Ik verwacht dat je alleen investeert in wat écht strikt noodzakelijk is."
     jump deel2_question_1
 
 label deel2_question_1:
+    hide cfo
+    show it at it_size, right
     it "Laten we beginnen met de voordeur van ons bedrijfsnetwerk: de firewall. Met 800 medewerkers stroomt er dagelijks gigantisch veel data in en uit."
     it "We hebben een krachtige Next-Generation Firewall nodig die al dat netwerkverkeer scant op virussen en indringers buiten de deur houdt."
+    hide it
+    show cfo at cfo_size, right
     cfo "Ik heb de mogelijke offertes gezien en ik schrok me kapot. Die apparaten zijn peperduur. Is dat echt nodig, of kunnen we het met een budgetoplossing af?"
     jump deel2_question_1_menu
 
@@ -340,7 +380,11 @@ label deel2_question_1_menu:
 
         "Het bedrijf moet geen firewall aankopen":
             $ firewall = 0
+            hide cfo
+            show it at it_size, right
             it "Dit is absolute waanzin! Zonder firewall staan al onze bedrijfsgegevens, servers en klantinformatie gewoon open en bloot op het internet!"
+            hide it
+            show cfo at cfo_size, right
             cfo "Kijk, dat is nou eens een flinke besparing. Ik hoop wel dat je weet wat je doet, CSO, de verantwoordelijkheid ligt volledig bij jou."
             jump deel2_question_2
 
@@ -350,7 +394,11 @@ label deel2_question_1_menu:
                 $ firewall = 1
                 $ reputatie = reputatie - 5
                 $ geld = geld - 20000
+                hide cfo
+                show it at it_size, right
                 it "Een instapmodel. Het houdt de meest simpele aanvallen tegen, maar we kopen er maar één. Als dit apparaat crasht, ligt de internetverbinding voor alle 800 medewerkers plat."
+                hide it
+                show cfo at cfo_size, right
                 cfo "Twintigduizend euro is nog net te overzien. Zolang het dat vinkje voor de security-audit maar op groen zet, vind ik het best."
                 jump deel2_question_2
             else:
@@ -362,6 +410,13 @@ label deel2_question_1_menu:
             $ firewall = 2
             $ reputatie = reputatie - 10
             $ geld = geld - 60000
+            $ reputatie = reputatie - 5
+            hide cfo
+            show it at it_size, right
+            it "Een uitstekende en verstandige keuze. Hiermee kopen we twee firewalls die elkaars werk naadloos overnemen als er één uitvalt, mét geavanceerde virusscans."
+            hide it
+            show cfo at cfo_size, right
+            cfo "Zestigduizend euro... Pfft, dat is een flinke hap uit onze winstmarge. Maar goed, als het ons een nog duurdere hack en downtime bespaart, heb je mijn zegen."
             if (geld < 0):
                 show screen popup_note("You can't affort this. You only have €[geld].")
             else:
@@ -373,6 +428,13 @@ label deel2_question_1_menu:
             $ firewall = 3
             $ reputatie = reputatie - 15
             $ geld = geld - 120000
+            $ reputatie = reputatie - 10
+            hide cfo
+            show it at it_size, right
+            it "Perfect! Dit is de absolute top van de markt voor enterprise netwerken. Onverslaanbare netwerksegmentatie, topsnelheid en de allerbeste actieve virusdetectie die we kunnen krijgen."
+            hide it
+            show cfo at cfo_size, right
+            cfo "Honderdtwintigduizend euro?! Ben je je verstand verloren? Dit is zwaar overdreven en slaat een gigantisch gat in onze kas!"
             if (geld < 0):
                 show screen popup_note("You can't affort this. You only have €[geld].")
             else:
@@ -381,8 +443,12 @@ label deel2_question_1_menu:
                 jump deel2_question_2
 
 label deel2_question_2:
+    hide cfo
+    show it at it_size, right
     it "Het volgende agendapunt is onze back-up strategie. Als er ooit ransomware op ons netwerk belandt, versleutelen de hackers al onze data."
     it "Zonder goede back-ups zijn we in zo'n scenario letterlijk al onze bedrijfsgegevens kwijt, of moeten we miljoenen aan losgeld betalen."
+    hide it
+    show cfo at cfo_size, right
     cfo "Ik weet dat we data moeten bewaren, maar ik zie ook de facturen van die cloud-opslag. Het kost ons handenvol geld om dingen dubbel op te slaan."
 
     menu:
@@ -392,6 +458,13 @@ label deel2_question_2:
             $ backups = 2
             $ reputatie = reputatie - 10
             $ geld = geld - 225000
+            $ reputatie = reputatie - 10
+            hide cfo
+            show it at it_size, right
+            it "Een fantastische keuze. Mocht er een ramp gebeuren, dan kunnen we letterlijk het hele bedrijf inclusief alle mailboxen en pc-instellingen binnen no-time herstellen."
+            hide it
+            show cfo at cfo_size, right
+            cfo "Tweehonderdvijfentwintigduizend euro?! Dit is te bizar voor woorden! We betalen een kwart miljoen voor het opslaan van gigabytes aan nutteloze e-mails en kattenplaatjes van het personeel!"
             if (geld < 0):
                 show screen popup_note("You can't affort this. You only have €[geld].")
             else:
@@ -403,6 +476,12 @@ label deel2_question_2:
             $ backups = 1
             $ repuatie = reputatie - 5
             $ geld = geld - 66000
+            hide cfo
+            show it at it_size, right
+            it "Een werkbaar compromis. De harde bedrijfsdata is veilig, al zijn we bij een hack wel alle e-mailhistorie en individuele computerinstellingen kwijt."
+            hide it
+            show cfo at cfo_size, right
+            cfo "Kijk, zesenzestigduizend euro klinkt al een stuk logischer. De essentiële contracten zijn veilig, en de rest is toch maar ballast."
             if (geld < 0):
                 show screen popup_note("You can't affort this. You only have €[geld].")
             else:
@@ -412,23 +491,47 @@ label deel2_question_2:
         
         "Niets back-uppen":
             $ backups = 0
+            hide cfo
+            show it at it_size, right
             it "Dit is een onverantwoord risico! Als we een ransomware-aanval binnenkrijgen of een zware servercrash hebben, riskeren we het voortbestaan van het hele bedrijf."
+            hide it
+            show cfo at cfo_size, right
             cfo "Kijk, dat is weer nul euro op de begroting. Bovendien hebben we net geld uitgegeven aan de voordeur, toch? Zorg dan gewoon dat die hackers überhaupt niet binnenkomen."
             jump hack
 
 
-
 label deel2_question_3:
-    it "Nu we weten dat we gaan back-uppen, moeten we bepalen hóe vaak we dat doen. Dit bepaalt hoeveel werk we kwijt zijn als het misgaat."
+    hide cfo
+    show it at it_size, right
+    it "Nu we weten dát we gaan back-uppen, moeten we bepalen hóe vaak we dat doen. Dit bepaalt hoeveel werk we kwijt zijn als het misgaat."
+    hide it
+    show cfo at cfo_size, right
     cfo "Hoe vaker we opslaan, hoe meer opslagruimte we nodig hebben. Dat soort verborgen kosten tikken gigantisch aan, dus hou het bescheiden."
     
     menu:
         "Wanneer wordt er geback-upt?"
+
+        "toch geen back-ups":
+            if (backups = 2):
+                $ geld = geld + 225000
+            elif (backups = 1):
+                $ geld = geld + 66000
+            $ backups = 0
+            $ reputatie = reputatie - 5
+            hide cfo
+            show it at it_size, right
+            it "Oh, heb je besloten toch geen back-ups te nemen? Dit lijkt me absoluut geen slime keuze!"
         
         "elk jaar back-uppen (€250.000)":
             $ backups_time = 1
             $ reputatie =  reputatie - 5
             $ geld = geld - 250000
+            hide cfo
+            show it at it_size, right
+            it "Eén keer per jaar?! Als we in november gehackt worden, zijn we letterlijk het werk van de afgelopen elf maanden kwijt!"
+            hide it
+            show cfo at cfo_size, right
+            cfo "Maar het is wel de goedkoopste optie. Laten we gewoon zorgen dat we niet gehackt worden, dan is er niets aan de hand."
             if (geld < 0):
                 show screen popup_note("You can't affort this. You only have €[geld].")
             else:
@@ -440,6 +543,12 @@ label deel2_question_3:
             $ backups_time = 2
             $ reputatie = reputatie - 10
             $ geld = geld - 650000
+            hide cfo
+            show it at it_size, right
+            it "Acceptabel, maar in het ergste geval moeten we de orders en administratie van een hele maand handmatig reconstrueren."
+            hide it
+            show cfo at cfo_size, right
+            cfo "Zeshonderdvijftigduizend is al heel fors, maar het is een redelijk compromis. Ik ga ermee akkoord."
             if (geld < 0):
                 show screen popup_note("You can't affort this. You only have €[geld].")
             else:
@@ -451,6 +560,13 @@ label deel2_question_3:
             $ backups_time = 3
             $ reputatie = reputatie - 15
             $ geld = geld - 800000
+            $ reputatie = reputatie - 5
+            hide cfo
+            show it at it_size, right
+            it "Een hele solide keuze. Maximaal een week aan dataverlies is pijnlijk, maar we overleven het wel als bedrijf."
+            hide it
+            show cfo at cfo_size, right
+            cfo "Acht ton voor wat kopietjes in de week... Mijn hart kan deze bedragen nauwelijks nog aan."
             if (geld < 0):
                 show screen popup_note("You can't affort this. You only have €[geld].")
             else:
@@ -463,6 +579,13 @@ label deel2_question_3:
             $ backups_time = 4
             $ reputatie = reputatie - 20
             $ geld = geld - 1000000
+            $ reputatie = reputatie - 10
+            hide cfo
+            show it at it_size, right
+            it "De gouden standaard. Zelfs bij een complete ransomware-aanval verliezen we hooguit het werk van de afgelopen 24 uur."
+            hide it
+            show cfo at cfo_size, right
+            cfo "Een miljoen euro?! We betalen ons helemaal blauw aan serverruimte! Dit is absurd!"
             if (geld < 0):
                 show screen popup_note("You can't affort this. You only have €[geld].")
             else:
@@ -476,10 +599,17 @@ default weakness = 0
 label hack:
     if (phishing_aware):
         $ reputatie = reputatie + 10
+        hide cfo
+        hide it
+        show wv at wv_size, right
         wv "Wacht, een van de werknemers meldt net een extreem overtuigende e-mail over een onbetaalde factuur. Hij herkende het als phishing dankzij de training en klikte niet!"
+        hide wv
+        show it at it_size, right
         it "Fantastisch! Onze menselijke firewall werkt. De eerste aanvalsgolf is afgeslagen."
         jump hack_2
     else:
+        hide cfo
+        show it at it_size, right
         it "Slecht nieuws. Een werknemer trapte in een phishing mail over een onbetaalde factuur en heeft zijn inloggegevens ingevuld."
         menu:
             "Moet de medewerker zijn wachtwoorden veranderen?"
@@ -519,6 +649,8 @@ label hack_2:
             "Wil je de medewerkers verplichten om te updaten?"
 
             "Ja, de medewerkers verplichten om te updaten.":
+                hide it
+                show wv at wv_size, right
                 wv "Je gooit nu letterlijk iedereen uit het systeem! Heel NeXioCo zit nu naar een update-scherm te staren. De productie ligt volledig plat!"
                 $ reputatie = reputatie - 10
                 jump hack_3
@@ -530,6 +662,8 @@ label hack_2:
                 jump hack_3
 
 label hack_3:
+    hide wv
+    show it at it_size, right
     it "Kijk naar deze logs! Ze proberen nu in te loggen met gestolen werknemersgegevens..."
     if not MFA:
         it "We hebben geen Multi-Factor Authenticatie! De hacker is succesvol ingelogd met alleen het wachtwoord. Ze zitten op ons netwerk!"
@@ -550,6 +684,9 @@ label hack_4:
     jump the_aftermatch
 
 label the_aftermatch:
+    hide it
+    show ceo at ceo_size, left
+    show cso at cso_size, right
     ceo "CSO! Kom onmiddellijk naar mijn kantoor!"
     if (weakness < 3):
         ceo "Ik hoorde van IT dat we zwaar onder vuur lagen, maar dat we nagenoeg alles hebben afgeslagen."
@@ -557,6 +694,8 @@ label the_aftermatch:
         $ reputatie = reputatie + 50
     elif (weakness < 6):
         ceo "De hackers zijn binnengedrongen! Ze hebben onze allerbelangrijkste contracten en klantdossiers achter ransomware gezet!"
+        show cso at cso_size, center
+        show it at it_size, right
         if (backups == 1 or backups == 2):
             it "Geen paniek, we hebben gelukkig back-ups van deze bestanden veiliggesteld."
             
@@ -582,6 +721,8 @@ label the_aftermatch:
             $ geld = geld - 70000000
     else:
         ceo "HET HELE BEDRIJF LIGT PLAT! De hackers hebben volledige toegang gekregen en letterlijk elke server en computer versleuteld!"
+        show cso at cso_size, center
+        show it at it_size, right
         if (backups == 2):
             it "Dit is een catastrofe, maar we hebben gelukkig wel een back-up van al onze systemen en servers."
             if (backups_time == 4):
