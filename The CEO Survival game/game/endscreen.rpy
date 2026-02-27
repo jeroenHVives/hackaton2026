@@ -52,7 +52,7 @@ screen simpel_eindscherm(titel, bericht, kleur):
             null height 50
             
             # Brede, moderne knop die meekleurt met het thema
-            textbutton "OPNIEUW SPELEN" action Start():
+            textbutton "TERUG NAAR HOOFDMENU" action Return():
                 xalign 0.5
                 text_size 24
                 text_bold True
