@@ -475,15 +475,18 @@ default weakness = 0
 label hack:
     if (phishing_aware):
         $ reputatie = reputatie + 10
-        narator "placeholder phishing aware"
+        wv "Wacht, een van de werknemers meldt net een extreem overtuigende e-mail over een onbetaalde factuur. Hij herkende het als phishing dankzij de training en klikte niet!"
+        it "Fantastisch! Onze menselijke firewall werkt. De eerste aanvalsgolf is afgeslagen."
         jump hack_2
     else:
-        narator "placeholder niet phishing aware (medewerker heeft op een link geklikt)"
+        it "Slecht nieuws. Een werknemer trapte in een phishing mail over een onbetaalde factuur en heeft zijn inloggegevens ingevuld."
         menu:
             "Moet de medewerker zijn wachtwoorden veranderen?"
 
             "Hij moet zijn wachtwoorden niet aanpassen.":
-                narator "placeholder ww niet aanpassen"
+                it "We doen niets? Laten we hopen dat de hackers niet sneller zijn dan wij... Dit is gewoon gokken."
+                if (diff_passwords):
+                    $ weakness = weakness + 1
                 if (diff_passwords):
                     $ weakness = weakness + 1
                 else:
@@ -494,18 +497,18 @@ label hack:
                 if not diff_passwords:
                     $ weakness = weakness + 2
                 $ reputatie = reputatie - 5   
-                narator "placeholder alleen dat ww aanpassen"           
+                it "We hebben het wachtwoord gereset. Maar aangezien we hetzelfde wachtwoord voor alles toestaan, proberen ze het nu vast op een ander systeem."           
                 jump hack_2
 
             "Hij moet al zijn wachtwoorden aanpassen.":
                 $ reputatie = reputatie - 15
-                narator "placeholder alle ww aanpassen"
+                it "Het is streng, maar wel de enige manier om de boel nu af te dichten."
                 jump hack_2
   
 label hack_2:
-    narator "placeholder weakness in vorige versie"
+    it "Het stopt niet. Er is zojuist een wereldwijde 'Zero-Day' kwetsbaarheid ontdekt in de software die wij gebruiken."
     if (updates):
-        narator "placeholder laatste versie dus veilig"
+        it "Gelukkig hebben we automatische updates aan staan! Al onze systemen zijn vannacht gepatcht, dus de hackers lopen hier tegen een muur."
         $ reputatie = reputatie + 5
         jump hack_3
     else:
@@ -515,55 +518,56 @@ label hack_2:
             "Wil je de medewerkers verplichten om te updaten?"
 
             "Ja, de medewerkers verplichten om te updaten.":
-                narator "placeholder verplicht updaten"
+                wv "Je gooit nu letterlijk iedereen uit het systeem! Heel NeXioCo zit nu naar een update-scherm te staren. De productie ligt volledig plat!"
                 $ reputatie = reputatie - 10
                 jump hack_3
             
             "Nee, de medewerkers niet verplichten om te updaten.":
-                narator "placeholder niet verplicht updaten"
+                it "We laten de lekken openstaan? De hackers hoeven nu niet eens meer moeite te doen om binnen te komen..."
                 $ reputatie = reputatie - 5
                 $ weakness = weakness + 1
                 jump hack_3
 
 label hack_3:
-    narator "placeholder MFA hack"
+    it "Kijk naar deze logs! Ze proberen nu in te loggen met gestolen werknemersgegevens..."
     if not MFA:
-        narator "placeholder geen MFA"
+        it "We hebben geen Multi-Factor Authenticatie! De hacker is succesvol ingelogd met alleen het wachtwoord. Ze zitten op ons netwerk!"
         $ weakness = weakness + 1
     else:
-        narator "placeholder MFA"
+        it "De hacker probeerde in te loggen, maar werd geblokkeerd! Hij had de MFA-code op de telefoon van de medewerker niet. Deze aanval is afgeslagen!"
     jump hack_4
 
 label hack_4:
-    narator "placeholder firewall hack"
+    it "Ze proberen het nu met brute kracht. Er stroomt een gigantische hoeveelheid geautomatiseerde malware op onze voordeur af!"
     if (firewall == 0):
-        narator "placeholder geen firewall"
+        it "We hebben geen firewall! Het schadelijke verkeer stroomt ongehinderd ons netwerk binnen. Dit is een slachtpartij!"
     elif (firewall == 1):
-        narator "placeholder goedkope firewall"
+        it "Onze instap-firewall houdt de simpelste pings tegen, maar dit is geavanceerde malware. Het apparaat is overbelast en ze glippen erdoorheen!"
     else:
-        narator "placeholder dure firewall"
+        it "Onze enterprise firewall herkent de malware direct. Het schadelijke verkeer wordt vakkundig geblokkeerd en geïsoleerd. We houden stand!"
     $ weakness = weakness + (3-firewall)
     jump the_aftermatch
 
 label the_aftermatch:
-    narator "placeholder the aftermatch"
+    ceo "CSO! Kom onmiddellijk naar mijn kantoor!"
     if (weakness < 3):
-        narator "placeholder niet gehackt"
+        ceo "Ik hoorde van IT dat we zwaar onder vuur lagen, maar dat we nagenoeg alles hebben afgeslagen."
+        ceo "Uitstekend werk. Je hebt ons bedrijf gered van een miljoenenstrop. Je bent je salaris dubbel en dwars waard!"
         $ reputatie = reputatie + 50
     elif (weakness < 6):
-        narator "placeholder gehackt en files achter ransomware"
+        ceo "De hackers zijn binnengedrongen! Ze hebben onze allerbelangrijkste contracten en klantdossiers achter ransomware gezet!"
         if (backups == 1 or backups == 2):
-            narator "placeholder weinig schade"
+            it "Geen paniek, we hebben gelukkig back-ups van deze bestanden veiliggesteld."
+            
             if (backups_time == 4):
-                narator "placeholder dagelijks backuppen"
+                it "Omdat we dagelijks back-uppen, verliezen we hooguit het werk van gistermiddag. We zijn snel weer online."
                 $ reputatie = reputatie - 5
             elif (backups_time == 3):
-                narator "placeholder weeklijks backuppen"
+                it "We verliezen wel een hele week aan data. Dat gaat een flinke chaos opleveren op de administratie."
                 $ reputatie = reputatie - 15
             elif (backups_time == 2):
-                narator "placeholder maandelijks backuppen"
+                it "We zijn een maand aan documenten kwijt. Het gaat heel veel tijd en geld kosten om dat handmatig te herstellen."
                 $ reputatie = reputatie - 25
-                narator "placeholder gemiddelde som (€6.000.000)"
                 $ geld = geld - 6000000
             else:
                 narator "placeholder jaarlijkse backuppen"
@@ -571,37 +575,41 @@ label the_aftermatch:
                 narator "placeholder grote som (€55.000.000)"
                 $ geld = geld - 55000000
         else:
-            narator "placeholder geen backups (€70.000.000)"
+            ceo "En je vertelt me nu dat we GEEN back-ups hebben?! We moeten het losgeld betalen of we kunnen de deuren sluiten!"
             $ reputatie = reputatie - 50
+            ceo "Dit gaat ons 70 miljoen euro kosten! Hoe heb je dit kunnen laten gebeuren?!"
             $ geld = geld - 70000000
     else:
-        narator "placeholder gehackt en alles achter ransomware"
+        ceo "HET HELE BEDRIJF LIGT PLAT! De hackers hebben volledige toegang gekregen en letterlijk elke server en computer versleuteld!"
         if (backups == 2):
-            narator "placeholder weinig schade"
+            it "Dit is een catastrofe, maar we hebben gelukkig wel een back-up van al onze systemen en servers."
             if (backups_time == 4):
-                narator "placeholder dagelijks backuppen"
+                it "Dankzij de dagelijkse back-ups kunnen we de schade beperken tot gisteren. Het kost moeite, maar we komen hier doorheen."
                 $ reputatie = reputatie - 5
             elif (backups_time == 3):
-                narator "placeholder weeklijks backuppen"
+                it "We verliezen een hele week aan bedrijfsactiviteit en configuraties. De impact op de operatie is enorm."
                 $ reputatie = reputatie - 15
             elif (backups_time == 2):
-                narator "placeholder maandelijks backuppen"
+                it "Een maand aan dataverlies op het héle netwerk. We moeten systemen dagenlang handmatig nabouwen."
                 $ reputatie = reputatie - 25
-                narator "placeholder gemiddelde som (€14.000.000)"
+                ceo "Dat gaat ons zo'n 14 miljoen euro kosten aan herstel en misgelopen omzet. Wat een puinhoop!"
                 $ geld = geld - 14000000
             else:
-                narator "placeholder jaarlijks backuppen"
+                it "Onze laatste volledige back-up is bijna een jaar oud... We moeten alles van de afgelopen maanden opnieuw opbouwen."
                 $ reputatie = reputatie - 25
-                narator "placeholder grote som (€95.000.000)"
+                ceo "Een jaar aan data weg?! De herstelkosten en reputatieschade gaan ons 95 miljoen euro kosten! Je speelt met de toekomst van dit bedrijf!"
                 $ geld = geld - 95000000
         elif (backups == 1):
-            narator "placeholder alleen files geback-upt (€150.000.000)"
+            ceo "We hebben wel onze documenten, maar de héle IT-infrastructuur is vernietigd! We moeten het netwerk van de grond af opnieuw opbouwen!"
             $ reputatie = reputatie - 50
+            ceo "De schade loopt op tot wel 150 miljoen euro! Aandeelhouders gaan onze koppen eisen!"
             $ geld = geld - 150000000
         else:
-            narator "placeholder geen backups (€200.000.000)"
+            ceo "We hebben helemaal niets meer! Geen servers, geen data, en geen back-ups. Het bedrijf is volledig verwoest door jouw laksheid."
             $ reputatie = reputatie - 100
+            ceo "Dat is 200 miljoen euro aan schade! Je bent op staande voet ONTSLAGEN!"
             $ geld = geld - 200000000
+    
     if geld < 0:
         jump failliet
     else:
