@@ -318,7 +318,8 @@ label deel2_question_2:
         
         "Niets back-uppen":
             $ backups = 0
-            narator "placeholder niets back-uppen"
+            it "Dit is een onverantwoord risico! Als we een ransomware-aanval binnenkrijgen of een zware servercrash hebben, riskeren we het voortbestaan van het hele bedrijf."
+            cfo "Kijk, dat is weer nul euro op de begroting. Bovendien hebben we net geld uitgegeven aan de voordeur, toch? Zorg dan gewoon dat die hackers überhaupt niet binnenkomen."
             jump deel2_question_3
 
 
