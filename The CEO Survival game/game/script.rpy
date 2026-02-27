@@ -424,7 +424,7 @@ label deel2_question_3:
             if (geld < 0):
                 jump failliet
             else:
-                jump deel2_question_4
+                jump hack
 
         "elke week back-uppen (€800.000)":
             $ backups_time = 3
