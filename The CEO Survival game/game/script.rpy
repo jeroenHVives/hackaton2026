@@ -476,7 +476,8 @@ label deel2_question_2:
 
 
 label deel2_question_3:
-    narator "placeholder om de hoeveel dagen back-uppen."
+    it "Nu we weten dát we gaan back-uppen, moeten we bepalen hóe vaak we dat doen. Dit bepaalt hoeveel werk we kwijt zijn als het misgaat."
+    cfo "Hoe vaker we opslaan, hoe meer opslagruimte we nodig hebben. Dat soort verborgen kosten tikken gigantisch aan, dus hou het bescheiden."
     
     menu:
         "Wanneer wordt er geback-upt?"
@@ -488,7 +489,8 @@ label deel2_question_3:
         "elk jaar back-uppen (€250.000)":
             $ backups_time = 1
             $ geld = geld - 250000
-            narator "placeholder jaarlijks back-uppen"
+            it "Eén keer per jaar?! Als we in november gehackt worden, zijn we letterlijk het werk van de afgelopen elf maanden kwijt!"
+            cfo "Maar het is wel de goedkoopste optie. Laten we gewoon zorgen dat we niet gehackt worden, dan is er niets aan de hand."
             if (geld < 0):
                 jump failliet
             else:
@@ -497,17 +499,19 @@ label deel2_question_3:
         "elke maand back-uppen (€650.000)":
             $ backups_time = 2
             $ geld = geld - 650000
-            narator "placeholder maandelijks back-uppen"
+            it "Acceptabel, maar in het ergste geval moeten we de orders en administratie van een hele maand handmatig reconstrueren."
+            cfo "Zeshonderdvijftigduizend is al heel fors, maar het is een redelijk compromis. Ik ga ermee akkoord."
             if (geld < 0):
                 jump failliet
             else:
-                jump deel2_question_4
+                jump hack
 
         "elke week back-uppen (€800.000)":
             $ backups_time = 3
             $ geld = geld - 800000
             $ reputatie = reputatie - 5
-            narator "placeholder weekelijks back-uppen"
+            it "Een hele solide keuze. Maximaal een week aan dataverlies is pijnlijk, maar we overleven het wel als bedrijf."
+            cfo "Acht ton voor wat kopietjes in de week... Mijn hart kan deze bedragen nauwelijks nog aan."
             if (geld < 0):
                 jump failliet
             else:
@@ -518,7 +522,8 @@ label deel2_question_3:
             $ backups_time = 4
             $ geld = geld - 1000000
             $ reputatie = reputatie - 10
-            narator "placeholder dagelijks back-uppen"
+            it "De gouden standaard. Zelfs bij een complete ransomware-aanval verliezen we hooguit het werk van de afgelopen 24 uur."
+            cfo "Een miljoen euro?! We betalen ons helemaal blauw aan serverruimte! Dit is absurd!"
             if (geld < 0):
                 jump failliet
             else:
@@ -626,9 +631,9 @@ label the_aftermatch:
                 $ reputatie = reputatie - 25
                 $ geld = geld - 6000000
             else:
-                narator "placeholder jaarlijkse backuppen"
+                it "Onze back-up is maanden oud... We moeten externe specialisten invliegen om te redden wat er te redden valt."
                 $ reputatie = reputatie - 25
-                narator "placeholder grote som (€55.000.000)"
+                ceo "Dat gaat ons minimaal 55 miljoen euro kosten! Dit is een gigantische financiële klap!"
                 $ geld = geld - 55000000
         else:
             ceo "En je vertelt me nu dat we GEEN back-ups hebben?! We moeten het losgeld betalen of we kunnen de deuren sluiten!"
