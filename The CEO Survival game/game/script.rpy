@@ -359,7 +359,8 @@ label deel2_question_3:
             if (geld < 0):
                 jump failliet
             else:
-                jump deel2_question_4
+                jump hack
+                #jump deel2_question_4
         
         "elke dag back-uppen (€1.000.000)":
             $ backups_time = 4
@@ -368,9 +369,10 @@ label deel2_question_3:
             if (geld < 0):
                 jump failliet
             else:
-                jump deel2_question_4
+                jump hack
+                #jump deel2_question_4
 
-label deel2_question_4:
+"""label deel2_question_4:
     narator "placeholder eigen server of externe server"
     
     menu:
@@ -386,14 +388,14 @@ label deel2_question_4:
                 jump hack
 
         "Externe servers (€90.000)":
-            $ eigen_server = True
+            $ eigen_server = False
             $ geld = geld - 90000
             narator "placeholder externe server voor backups"
             if (geld < 0):
                 jump failliet
             else:
                 jump hack
-
+"""
 default weakness = 0
 default reputatie = 100
 
@@ -416,7 +418,7 @@ label hack:
                 jump hack_2
 
             "Hij moet alleen dat wachtwoord aanpassen.":
-                if !(diff_passwords):
+                if not diff_passwords:
                     $ weakness = weakness + 2
                 $ reputatie = reputatie - 5   
                 narator "placeholder alleen dat ww aanpassen"           
@@ -452,7 +454,7 @@ label hack_2:
 
 label hack_3:
     narator "placeholder MFA hack"
-    if !(MFA):
+    if not MFA:
         narator "placeholder geen MFA"
         $ weakness = weakness + 1
     else:
@@ -527,3 +529,7 @@ label the_aftermatch:
             narator "placeholder geen backups (€200.000.000)"
             $ reputatie = reputatie - 100
             $ geld = geld - 200000000
+    if geld < 0:
+        jump failliet
+    else:
+        jump the_end
