@@ -10,7 +10,7 @@ define wv = Character("Werknemer vertegenwoordiger", color="#118afa")
 define cfo = Character("CFO", color="#03fce3")
 define narator = Character(" ")
 
-default geld = 2500000
+default geld = 1066000
 default reputatie = 100
 
 default WV_Happines = 7
